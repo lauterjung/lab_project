@@ -1,14 +1,22 @@
 import unittest
+from classes.lab_case import LabCase
 
 from classes.person import Person
 
 
 class NamesTestCase(unittest.TestCase):
 
-    def test_person_str(self):
-        testPerson = Person(name = "Miguel", age = 29)
-        #self.assertEquals(testPerson.name, "Miguel")
-        testBrokenPerson = Person(name = 29, age = 29)
-        self.assertEquals(testBrokenPerson.name, 29)
+    def testLabCase(self):
+        objLabCase = LabCase(juridicCases=["123456", "789987"], cardNumbers=["123","456"])
+        self.assertEqual(["123456", "789987"], objLabCase.juridicCases)
+        self.assertIn("123456", objLabCase.juridicCases)
+        self.assertIn("456", objLabCase.cardNumbers)
+        self.assertNotIn("999", objLabCase.cardNumbers)
 
 
+# assertEqual
+# assertNotEqual
+# assertTrue
+# assertFalse
+# assertIn
+# assertNotIn
