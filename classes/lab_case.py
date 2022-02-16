@@ -2,13 +2,13 @@ from classes.individual import Individual
 
 class LabCase:
     
-    caseID = int
+    case_id = int
         
-    def __init__(self, juridicCases: list[str], cardNumbers: list[str],
-                 individualM: Individual = None, individualC: Individual = None, individualAF: Individual = None):
+    def __init__(self, juridic_cases: list[str], card_numbers: list[str],
+                 individual_m: Individual = None, individual_c: Individual = None, individual_af: Individual = None):
         
-        self.juridicCases = juridicCases
-        self.cardNumbers = cardNumbers
-        self.individualM = individualM
-        self.individualC = individualC
-        self.individualAF = individualAF
+        self.juridic_cases = juridic_cases
+        self.card_numbers = card_numbers
+        self.individual_m = individual_m
+        self.individual_c = individual_c
+        self.individual_af = individual_af

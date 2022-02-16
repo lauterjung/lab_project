@@ -8,18 +8,18 @@ from controller.lab_case_controller import LabCaseController, LabCaseControllerI
 class LabCaseControllerTest(unittest.TestCase):
 
     def test_register_lab_case(self):
-        caseID = 1
+        case_id = 1
         juridic_cases = ["12345", "12346"]
         card_numbers = ["123", "456"]
         
         lab_case = LabCase(juridic_cases, card_numbers)
-        lab_case.caseID = caseID
+        lab_case.caseID = case_id
         
         lab_case_db_mock = LabCaseDBMock()
         lab_case_controller = LabCaseControllerImpl(lab_case_db_mock)
         
         lab_case_controller.register_lab_case(lab_case)
-        self.assertEquals(lab_case_db_mock.fetch(caseID), lab_case)
+        self.assertEquals(lab_case_db_mock.fetch(case_id), lab_case)
         
 class LabCaseDBMock(LabCaseDB):
     
@@ -33,7 +33,7 @@ class LabCaseDBMock(LabCaseDB):
     
     def fetch(self, case: int) -> LabCase:
         for saved_case in self.lab_cases:
-            if(saved_case.caseID == case):
+            if(saved_case.case_id == case):
                 return saved_case
             
         return None
