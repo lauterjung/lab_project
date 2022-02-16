@@ -13,7 +13,7 @@ class LabCaseControllerTest(unittest.TestCase):
         card_numbers = ["123", "456"]
         
         lab_case = LabCase(juridic_cases, card_numbers)
-        lab_case.caseID = case_id
+        lab_case.case_id = case_id
         
         lab_case_db_mock = LabCaseDBMock()
         lab_case_controller = LabCaseControllerImpl(lab_case_db_mock)

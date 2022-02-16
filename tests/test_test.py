@@ -7,11 +7,11 @@ from classes.person import Person
 class NamesTestCase(unittest.TestCase):
 
     def testLabCase(self):
-        objLabCase = LabCase(juridicCases=["123456", "789987"], cardNumbers=["123","456"])
-        self.assertEqual(["123456", "789987"], objLabCase.juridicCases)
-        self.assertIn("123456", objLabCase.juridicCases)
-        self.assertIn("456", objLabCase.cardNumbers)
-        self.assertNotIn("999", objLabCase.cardNumbers)
+        objLabCase = LabCase(juridic_cases=["123456", "789987"], card_numbers=["123","456"])
+        self.assertEqual(["123456", "789987"], objLabCase.juridic_cases)
+        self.assertIn("123456", objLabCase.juridic_cases)
+        self.assertIn("456", objLabCase.card_numbers)
+        self.assertNotIn("999", objLabCase.card_numbers)
 
 
 # assertEqual
