@@ -7,3 +7,7 @@ class LabCaseDB:
     
     def fetch(case: int) -> LabCase:
         pass
+
+    def update(case: LabCase):
+        # dar update baseado em chave _id
+        pass

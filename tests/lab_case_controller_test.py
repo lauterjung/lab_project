@@ -31,16 +31,20 @@ class LabCaseControllerTest(unittest.TestCase):
         
         database = LabCaseDBMock()
         database.save(case)
-
+        # self.assertEquals(len(database.lab_cases), 1)
+        
         updated_juridic_cases = ["a", "b"]
         updated_card_numbers = ["a", "b"]
-        updatedCase = LabCase(updated_juridic_cases, updated_card_numbers)
-        updatedCase.case_id = case_id
+        updated_case = LabCase(updated_juridic_cases, updated_card_numbers)
+        updated_case.case_id = case_id
 
         controller = LabCaseControllerImpl(database)
-        controller.register_lab_case(updatedCase)
-
+        controller.register_lab_case(updated_case)
+        
+        fetched_case = database.fetch(case.case_id)
+        
         self.assertEquals(len(database.lab_cases), 1)
+        self.assertEquals(fetched_case.juridic_cases, updated_juridic_cases)
         
 class LabCaseDBMock(LabCaseDB):
     
@@ -52,10 +56,17 @@ class LabCaseDBMock(LabCaseDB):
     def save(self, case: LabCase):
         self.lab_cases.append(case)
     
-    def fetch(self, case: int) -> LabCase:
+    def fetch(self, case_id: int) -> LabCase:
         for saved_case in self.lab_cases:
-            if(saved_case.case_id == case):
+            if(saved_case.case_id == case_id):
                 return saved_case
-            
         return None
-
+    
+    def update(self, case: LabCase):
+        for i, saved_case in enumerate(self.lab_cases):
+            if(saved_case.case_id == case.case_id):
+                self.lab_cases[i] = case
+      
+    # def update(self, case: LabCase):
+    #     self.lab_cases.remove(self.fetch(case.case_id))
+    #     self.lab_cases.append(case)

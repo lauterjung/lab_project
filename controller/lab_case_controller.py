@@ -14,5 +14,15 @@ class LabCaseControllerImpl(LabCaseController):
     def __init__(self, db: LabCaseDB):
         self.db = db
         
+          
     def register_lab_case(self, case: LabCase):
-        self.db.save(case)
+        if self.db.fetch(case.case_id) == None:
+            self.db.save(case)
+        else:
+            self.db.update(case)
+            
+    # def fetch(self, case: int) -> LabCase:
+    # for saved_case in self.lab_cases:
+    #     if(saved_case.case_id == case):
+    #         return saved_case
+    # return None
