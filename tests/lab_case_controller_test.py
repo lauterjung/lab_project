@@ -20,6 +20,27 @@ class LabCaseControllerTest(unittest.TestCase):
         
         lab_case_controller.register_lab_case(lab_case)
         self.assertEquals(lab_case_db_mock.fetch(case_id), lab_case)
+
+    def test_register_lab_case_updates_existing_case(self):
+        case_id = 1
+        juridic_cases = ["a"]
+        card_numbers = ["a"]
+        
+        case = LabCase(juridic_cases, card_numbers)
+        case.case_id = case_id
+        
+        database = LabCaseDBMock()
+        database.save(case)
+
+        updated_juridic_cases = ["a", "b"]
+        updated_card_numbers = ["a", "b"]
+        updatedCase = LabCase(updated_juridic_cases, updated_card_numbers)
+        updatedCase.case_id = case_id
+
+        controller = LabCaseControllerImpl(database)
+        controller.register_lab_case(updatedCase)
+
+        self.assertEquals(len(database.lab_cases), 1)
         
 class LabCaseDBMock(LabCaseDB):
     
