@@ -1,9 +1,6 @@
 import unittest
 from classes.lab_case import LabCase
 
-from classes.person import Person
-
-
 class NamesTestCase(unittest.TestCase):
 
     def testLabCase(self):
