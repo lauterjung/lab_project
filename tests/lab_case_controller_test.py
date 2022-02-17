@@ -1,9 +1,9 @@
 import unittest
 
 from classes.lab_case import LabCase
+from classes.subject import Subject, SubjectType
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController, LabCaseControllerImpl
-
 
 class LabCaseControllerTest(unittest.TestCase):
 
@@ -31,7 +31,6 @@ class LabCaseControllerTest(unittest.TestCase):
         
         database = LabCaseDBMock()
         database.save(case)
-        # self.assertEquals(len(database.lab_cases), 1)
         
         updated_juridic_cases = ["a", "b"]
         updated_card_numbers = ["a", "b"]
@@ -45,9 +44,33 @@ class LabCaseControllerTest(unittest.TestCase):
         
         self.assertEquals(len(database.lab_cases), 1)
         self.assertEquals(fetched_case.juridic_cases, updated_juridic_cases)
+
+    def test_import_allele_table(self):
+        file_path = "assets/allele_table_example.csv"
+
+        case_id = 1
+        juridic_cases = ["a"]
+        card_numbers = ["a"]
+        case = LabCase(juridic_cases, card_numbers)
+        case.case_id = case_id
+
+        database = LabCaseDBMock()
+        database.save(case)
+
+        controller = LabCaseControllerImpl(database)
+        controller.import_allele_table(case, file_path)
+        
+        fetched_case = database.fetch(case.case_id)
+        self.assertEquals(len(fetched_case.subjects), 1)
+
+        fetched_subject = fetched_case.subjects[0]
+        self.assertEquals(fetched_subject.type, SubjectType.child)
+        self.assertEquals(fetched_subject.name, "UD000000F_VE")
+        self.assertEquals(len(fetched_subject.genetic_profile), 4)
+
+        
         
 class LabCaseDBMock(LabCaseDB):
-    
     lab_cases: list[LabCase]
     
     def __init__(self):
@@ -66,7 +89,3 @@ class LabCaseDBMock(LabCaseDB):
         for i, saved_case in enumerate(self.lab_cases):
             if(saved_case.case_id == case.case_id):
                 self.lab_cases[i] = case
-      
-    # def update(self, case: LabCase):
-    #     self.lab_cases.remove(self.fetch(case.case_id))
-    #     self.lab_cases.append(case)
