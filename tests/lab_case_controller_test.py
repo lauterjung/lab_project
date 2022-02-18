@@ -1,7 +1,7 @@
 import unittest
 
 from classes.lab_case import LabCase
-from classes.subject import Subject #, SubjectType
+from classes.subject import Subject
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController, LabCaseControllerImpl
 
@@ -66,9 +66,8 @@ class LabCaseControllerTest(unittest.TestCase):
         fetched_subject = fetched_case.subjects[0]
         self.assertEquals(fetched_subject.type, "F")
         self.assertEquals(fetched_subject.name, "UD000000F_VE")
-        # self.assertEquals(len(fetched_subject.genotype), 4)
-       
-        
+        self.assertEquals(len(fetched_subject.genetic_profile), 4)
+      
 class LabCaseDBMock(LabCaseDB):
     lab_cases: list[LabCase]
     
