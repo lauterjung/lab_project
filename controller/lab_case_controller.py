@@ -1,8 +1,9 @@
+import csv
+import re
 
-# OP_IGNORE?
-from sre_constants import OP_IGNORE
-
+from classes.genotype import Genotype
 from classes.lab_case import LabCase
+from classes.subject import Subject
 from controller.database import LabCaseDB
 
 class LabCaseController:
@@ -13,16 +14,40 @@ class LabCaseController:
 class LabCaseControllerImpl(LabCaseController):
     def __init__(self, db: LabCaseDB):
         self.db = db
-        
           
     def register_lab_case(self, case: LabCase):
         if self.db.fetch(case.case_id) == None:
             self.db.save(case)
         else:
             self.db.update(case)
+    
+    def import_allele_table(self, case: LabCase, file: str):
+        file = "tests/assets/allele_table_example.csv"
+        
+        with open(file) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            lines = []
+            for row in csv_reader:
+                lines.append(row)
+        
+        for line in lines[1:]:
+            name = line[0].strip()
+            locus = line[1].strip()
+            allele_1 = line[2].strip()
+            allele_2 = line[3].strip() if line[3].strip() != "" else allele_1 
+            genetic_profile = Genotype(locus, allele_1, allele_2)
             
-    # def fetch(self, case: int) -> LabCase:
-    # for saved_case in self.lab_cases:
-    #     if(saved_case.case_id == case):
-    #         return saved_case
-    # return None
+            subject = self.__get_subject(case, name)
+            
+            if subject != None:
+                subject.genetic_profile .append(genetic_profile)
+            else:
+                case.subjects.append(Subject(name, [genetic_profile]))                    
+  
+    def __get_subject(self, case, name):
+        for subject in case.subjects:
+            if subject.name == name:
+                return subject
+        return None
+            
+    

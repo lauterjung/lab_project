@@ -1,12 +1,17 @@
-from enum import Enum
-        
-class SubjectType(Enum):
-    mother = 1
-    child = 2
-    alledged_father = 3
+import re
+
+from classes.genotype import Genotype
 
 class Subject():
-    def __init__(self, type: SubjectType, name: str, genetic_profile: list[str]):
-        self.type = type
+    type: str
+    
+    def __init__(self, name: str, genetic_profile: list[Genotype]):
         self.name = name
-        self.genetic_profile = genetic_profile
+        self.genetic_profile = genetic_profile 
+        self.__set_subject_type()
+        
+    def __set_subject_type(self):
+        regex_pattern = r"(?<=UD\d{6})_?[a-zA-Z0-9]+"
+
+        regex_match = re.findall(regex_pattern, self.name)
+        self.type = regex_match[0].removeprefix("_")
