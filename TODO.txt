@@ -1,0 +1,10 @@
+TODO
+incluir kit
+incluir teste de kit
+
+criar exemplos de diferentes .csvs (duo, trio, kits com genótipos iguais, kits com genótipos diferentes)
+gerador de perfil genético com base em dois kits
+enum de SubjectType
+classificador de caso (TRIO, DUO, COMPLEXO) conforme subject types
+inclusão de LabCases e Subjects no DB. Se tem todos os genótipos, permitir proceder com cálculos.
+cálculos de paternidade
