@@ -67,7 +67,8 @@ class LabCaseControllerTest(unittest.TestCase):
         self.assertEquals(fetched_subject.type, "F")
         self.assertEquals(fetched_subject.name, "UD000000F_VE")
         self.assertEquals(len(fetched_subject.genetic_profile), 4)
-      
+        self.assertEquals(fetched_subject.genetic_profile[0].kit, "VE")
+        
 class LabCaseDBMock(LabCaseDB):
     lab_cases: list[LabCase]
     
