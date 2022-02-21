@@ -32,7 +32,7 @@ class LabCaseControllerImpl(LabCaseController):
         
         for line in lines[1:]:
             name = line[0].strip()
-            kit = re.findall(r"(?<=_)[a-zA-Z0-9]{2}$", name)[0]
+            kit = name[-2:]
             locus = line[1].strip()
             allele_1 = line[2].strip()
             allele_2 = line[3].strip() if line[3].strip() != "" else allele_1 

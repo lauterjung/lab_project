@@ -1,6 +1,5 @@
 TODO
-incluir kit
-incluir teste de kit
+refatorar kits
 
 criar exemplos de diferentes .csvs (duo, trio, kits com genótipos iguais, kits com genótipos diferentes)
 gerador de perfil genético com base em dois kits
