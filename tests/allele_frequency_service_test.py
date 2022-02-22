@@ -19,7 +19,7 @@ class AlleleFrequencyServiceTest(unittest.TestCase):
         
         db = LocusDBMock()
         
-        file = "assets/allele_frequency_example.csv"
+        file = "tests/assets/allele_frequency_example.csv"
         service = AlleleFrequencyService(db)
         service.read_allele_frequency(file)
         
@@ -27,9 +27,10 @@ class AlleleFrequencyServiceTest(unittest.TestCase):
         saved_locus_2 = db.fetch(locus_2.name)
         saved_locus_3 = db.fetch(locus_3.name)
         
-        self.assertEquals(saved_locus_1, locus_1)
-        self.assertEquals(saved_locus_2, locus_2)
-        self.assertEquals(saved_locus_3, locus_3)
+        self.assertEquals(saved_locus_1.alleles["1"], locus_1.alleles["1"])
+        self.assertEquals(saved_locus_2.alleles["1"], locus_2.alleles["1"])
+        self.assertEquals(saved_locus_3.alleles["1"], locus_3.alleles["1"])
+        self.assertEquals(saved_locus_3.alleles["2,2"], locus_3.alleles["2,2"])
         
 class LocusDBMock(LocusDB):
     loci: list[Locus]
