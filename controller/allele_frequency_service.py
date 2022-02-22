@@ -1,6 +1,5 @@
 import csv
 
-from numpy import column_stack
 from classes.locus import Locus
 from controller.database import LocusDB
 
@@ -19,6 +18,7 @@ class AlleleFrequencyService:
         # falta um if locus.name == name, porque locus já tá no db. Só lê a freq   
         # ou um método update()? 
         columns = zip(*lines)
+        
         frequency_list = []
         for column in columns:
             frequency_list.append(column)
@@ -31,7 +31,19 @@ class AlleleFrequencyService:
                 try:
                     alleles[d_keys[i]] = float(row[1+i].replace(",", "."))
                 except:
-                    alleles[d_keys[i]] = 0.001
+                    pass
+                    # alleles[d_keys[i]] = 0.001
             new_locus = Locus(name)
             new_locus.alleles = alleles
             self.db.save(new_locus)
+
+    # for column in columns:
+    #     if first column
+    #         allele_names = column
+    #         continue
+
+    #     locus = Locus(column[0].strip())
+    #     for i, v in enumerate(column[1:]):
+    #         # if i > 0
+    #         # escrever o try para o v em float e replace , .
+    #             locus.alleles[allele_names[i]] = v
