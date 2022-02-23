@@ -1,5 +1,5 @@
 import unittest
-from classes.locus import Locus
+from model.locus import Locus
 
 from controller.allele_frequency_service import AlleleFrequencyService
 from controller.database import LocusDB

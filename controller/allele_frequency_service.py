@@ -1,6 +1,6 @@
 import csv
 
-from classes.locus import Locus
+from model.locus import Locus
 from controller.database import LocusDB
 
 

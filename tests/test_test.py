@@ -1,5 +1,5 @@
 import unittest
-from classes.lab_case import LabCase
+from model.lab_case import LabCase
 
 class NamesTestCase(unittest.TestCase):
 

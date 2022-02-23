@@ -1,9 +1,9 @@
 import csv
 import re
 
-from classes.genotype import Genotype
-from classes.lab_case import LabCase
-from classes.subject import Subject
+from model.genotype import Genotype
+from model.lab_case import LabCase
+from model.subject import Subject
 from controller.database import LabCaseDB
 
 class LabCaseController():

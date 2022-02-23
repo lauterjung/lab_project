@@ -1,5 +1,5 @@
-from classes.lab_case import LabCase
-from classes.locus import Locus
+from model.lab_case import LabCase
+from model.locus import Locus
 
 class LabCaseDB:
     

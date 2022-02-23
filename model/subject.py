@@ -1,6 +1,6 @@
 import re
 
-from classes.genotype import Genotype
+from model.genotype import Genotype
 
 class Subject():
     type: str

@@ -1,7 +1,7 @@
 import unittest
 
-from classes.lab_case import LabCase
-from classes.subject import Subject
+from model.lab_case import LabCase
+from model.subject import Subject
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController, LabCaseController
 
