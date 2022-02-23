@@ -14,9 +14,6 @@ class AlleleFrequencyService:
             lines = []
             for row in csv_reader:
                 lines.append(row)
-        
-        # falta um if locus.name == name, porque locus já tá no db. Só lê a freq   
-        # ou um método update()? 
             
         columns = zip(*lines)
         
@@ -32,4 +29,15 @@ class AlleleFrequencyService:
                     locus.alleles[allele_names[j]] = float(frequency.replace(",", "."))
                 except:
                     pass
-                self.db.save(locus)
+                
+            self.db.save(locus)
+        
+    def get_allele_frequency(self, locus_name, allele_name):
+        locus = self.db.fetch(locus_name)
+        if locus != None:
+            if allele_name in locus.alleles:
+                return locus.alleles[allele_name]
+            
+        return 0.001
+
+        
