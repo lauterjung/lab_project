@@ -16,3 +16,22 @@ cálculos de paternidade
 testes para as regex
 
 xxxxx tabela de frequencias (leituras, etc)
+
+M F e SP = TRIO
+F e SP/SM = DUO
+!= SP = COMPLEXO
+
+
+
+x ler do(s) csv(s)
+"cadastrar"
+para cada caso, filtrar M e SP
+construir genótipo único com todos os kits (.csv)
+para somente M e depois somente F
+para cada loco do genótipo, ir armazenando o número de alelos e contando
+dividir pelo total
+retornar em tabela
+
+x ler do(s) csv(s)
+"cadastrar"
+para cada caso, calcular a estatística

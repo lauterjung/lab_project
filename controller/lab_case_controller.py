@@ -45,4 +45,3 @@ class LabCaseController():
                 return subject
         return None
             
-    

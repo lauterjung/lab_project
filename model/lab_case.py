@@ -7,3 +7,10 @@ class LabCase:
         self.juridic_cases = juridic_cases
         self.card_numbers = card_numbers
         self.subjects = subjects
+
+    def type_of_case():
+        pass
+    # return type_of_case
+    # DUO
+    # TRIO
+    # COMPLEX
