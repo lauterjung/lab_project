@@ -1,4 +1,4 @@
-from classes.subject import Subject
+from model.subject import Subject
 
 class LabCase:
     case_id: int

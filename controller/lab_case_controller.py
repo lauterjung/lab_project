@@ -1,17 +1,12 @@
 import csv
 import re
 
-from classes.genotype import Genotype
-from classes.lab_case import LabCase
-from classes.subject import Subject
+from model.genotype import Genotype
+from model.lab_case import LabCase
+from model.subject import Subject
 from controller.database import LabCaseDB
 
-class LabCaseController:
-    
-    def register_lab_case(case: LabCase):
-        pass
-
-class LabCaseControllerImpl(LabCaseController):
+class LabCaseController():
     def __init__(self, db: LabCaseDB):
         self.db = db
           
@@ -22,7 +17,6 @@ class LabCaseControllerImpl(LabCaseController):
             self.db.update(case)
     
     def import_allele_table(self, case: LabCase, file: str):
-        file = "tests/assets/allele_table_example.csv"
         
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')

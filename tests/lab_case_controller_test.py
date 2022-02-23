@@ -1,9 +1,9 @@
 import unittest
 
-from classes.lab_case import LabCase
-from classes.subject import Subject
+from model.lab_case import LabCase
+from model.subject import Subject
 from controller.database import LabCaseDB
-from controller.lab_case_controller import LabCaseController, LabCaseControllerImpl
+from controller.lab_case_controller import LabCaseController, LabCaseController
 
 class LabCaseControllerTest(unittest.TestCase):
 
@@ -16,7 +16,7 @@ class LabCaseControllerTest(unittest.TestCase):
         lab_case.case_id = case_id
         
         lab_case_db_mock = LabCaseDBMock()
-        lab_case_controller = LabCaseControllerImpl(lab_case_db_mock)
+        lab_case_controller = LabCaseController(lab_case_db_mock)
         
         lab_case_controller.register_lab_case(lab_case)
         self.assertEquals(lab_case_db_mock.fetch(case_id), lab_case)
@@ -37,7 +37,7 @@ class LabCaseControllerTest(unittest.TestCase):
         updated_case = LabCase(updated_juridic_cases, updated_card_numbers)
         updated_case.case_id = case_id
 
-        controller = LabCaseControllerImpl(database)
+        controller = LabCaseController(database)
         controller.register_lab_case(updated_case)
         
         fetched_case = database.fetch(case.case_id)
@@ -46,7 +46,7 @@ class LabCaseControllerTest(unittest.TestCase):
         self.assertEquals(fetched_case.juridic_cases, updated_juridic_cases)
 
     def test_import_allele_table(self):
-        file = "assets/allele_table_example.csv"
+        file = "tests/assets/allele_table_example.csv"
 
         case_id = 1
         juridic_cases = ["a"]
@@ -57,7 +57,7 @@ class LabCaseControllerTest(unittest.TestCase):
         database = LabCaseDBMock()
         database.save(case)
 
-        controller = LabCaseControllerImpl(database)
+        controller = LabCaseController(database)
         controller.import_allele_table(case, file)
         
         fetched_case = database.fetch(case.case_id)

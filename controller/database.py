@@ -1,4 +1,5 @@
-from classes.lab_case import LabCase
+from model.lab_case import LabCase
+from model.locus import Locus
 
 class LabCaseDB:
     
@@ -10,4 +11,12 @@ class LabCaseDB:
 
     def update(case: LabCase):
         # dar update baseado em chave _id
+        pass
+
+class LocusDB:
+    
+    def save(locus: Locus):
+        pass
+    
+    def fetch(locus: str) -> Locus:
         pass
