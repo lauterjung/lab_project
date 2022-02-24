@@ -1,43 +1,39 @@
+from enum import Enum
+
 from model.subject import Subject
 
+class LabCaseType(Enum):
+    invalid = 1
+    duo = 2
+    trio = 3
+    complex = 4
+
 class LabCase:
-    id: int
     juridic_cases: list[str]
     card_numbers: list[str]
-        
-    def __init__(self,  name: str, subjects: list[Subject] = []):
+    subjects: list[Subject]
+    
+    def __init__(self,  name: str, ):
         self.name = name
-        self.subjects = subjects
+        self.subjects = []
 
     def type_of_case(self):
-        pass
-        # for subject in self.subjects:
-        #     if subject.type == "F": # como acessar direto os subject types pra verificar se "F in names"?
-        #         continue
-        #     else:
-        #         # Raise error: F not found
-        #         break
-        # if len(self.subjects) > x:
- 
-        # return type_of_case
-        # DUO
-        # TRIO
-        # COMPLEX
         
-# old code (R) for basis
+        individual_types = []
+        for subject in self.subjects:
+            individual_types.append(subject.type)
         
-# tipo.caso <- ""
-#   if(length(unique(dados$nomenclatura)) == 3 & # se não tiver essa linha, duo entra como trio
-# 	 all(unique(dados$nomenclatura) %in% c("M", "F", "SP"))){
-#     tipo.caso <- "Trio"
-#   } 
-  
-#   if(length(unique(dados$nomenclatura)) == 2 &
-# 	(all(unique(dados$nomenclatura) %in% c("F", "SP"))|
-#   all(unique(dados$nomenclatura) %in% c("F", "SM")))){
-#     tipo.caso <- "Duo"
-#   } 
-
-#   if(tipo.caso != "Trio" & tipo.caso != "Duo"){ 
-#     tipo.caso <- "Complexo"
-#   } 
+        if "F" not in individual_types:
+            return LabCaseType.invalid
+        
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in ["SM", "F"]) or \
+               all(x in individual_types for x in ["F", "SP"]):
+                   return LabCaseType.duo
+        
+        if len(individual_types) == 3:
+            if all(x in individual_types for x in ["SM", "F", "P"]) or \
+               all(x in individual_types for x in ["M", "F", "SP"]):
+                    return LabCaseType.trio
+        
+        return LabCaseType.complex
