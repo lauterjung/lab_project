@@ -11,7 +11,7 @@ class LabCaseController():
         self.db = db
           
     def register_lab_case(self, case: LabCase):
-        if self.db.fetch(case.case_id) == None:
+        if self.db.fetch(case.id) == None:
             self.db.save(case)
         else:
             self.db.update(case)

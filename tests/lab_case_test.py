@@ -1,3 +1,5 @@
+# Do we still need this test? There is a similar one in lab_case_controller_test.
+
 import unittest
 from model.lab_case import LabCase
 
@@ -9,11 +11,3 @@ class NamesTestCase(unittest.TestCase):
         self.assertIn("123456", objLabCase.juridic_cases)
         self.assertIn("456", objLabCase.card_numbers)
         self.assertNotIn("999", objLabCase.card_numbers)
-
-
-# assertEqual
-# assertNotEqual
-# assertTrue
-# assertFalse
-# assertIn
-# assertNotIn

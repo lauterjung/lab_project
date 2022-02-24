@@ -22,25 +22,33 @@ class LabCaseControllerTest(unittest.TestCase):
         self.assertEquals(lab_case_db_mock.fetch(case_id), lab_case)
 
     def test_register_lab_case_updates_existing_case(self):
-        case_id = 1
+        
+        name = "UD990000"
+        case = LabCase(name)
+        
+        id = 1
         juridic_cases = ["a"]
         card_numbers = ["a"]
         
-        case = LabCase(juridic_cases, card_numbers)
-        case.case_id = case_id
+        case.id = id
+        case.juridic_cases = juridic_cases
+        case.card_numbers = card_numbers
         
         database = LabCaseDBMock()
         database.save(case)
         
         updated_juridic_cases = ["a", "b"]
         updated_card_numbers = ["a", "b"]
-        updated_case = LabCase(updated_juridic_cases, updated_card_numbers)
-        updated_case.case_id = case_id
-
+        
+        updated_case = LabCase(name)
+        updated_case.id = id
+        updated_case.juridic_cases = updated_juridic_cases
+        updated_case.card_numbers = updated_card_numbers
+        
         controller = LabCaseController(database)
         controller.register_lab_case(updated_case)
         
-        fetched_case = database.fetch(case.case_id)
+        fetched_case = database.fetch(case.id)
         
         self.assertEquals(len(database.lab_cases), 1)
         self.assertEquals(fetched_case.juridic_cases, updated_juridic_cases)
@@ -48,11 +56,10 @@ class LabCaseControllerTest(unittest.TestCase):
     def test_import_allele_table(self):
         file = "tests/assets/allele_table_example.csv"
 
-        case_id = 1
-        juridic_cases = ["a"]
-        card_numbers = ["a"]
-        case = LabCase(juridic_cases, card_numbers)
-        case.case_id = case_id
+        id = 1
+        name = "UD990000"
+        case = LabCase(name)
+        case.id = id
 
         database = LabCaseDBMock()
         database.save(case)
@@ -60,7 +67,7 @@ class LabCaseControllerTest(unittest.TestCase):
         controller = LabCaseController(database)
         controller.import_allele_table(case, file)
         
-        fetched_case = database.fetch(case.case_id)
+        fetched_case = database.fetch(case.id)
         self.assertEquals(len(fetched_case.subjects), 1)
 
         fetched_subject = fetched_case.subjects[0]
@@ -78,13 +85,13 @@ class LabCaseDBMock(LabCaseDB):
     def save(self, case: LabCase):
         self.lab_cases.append(case)
     
-    def fetch(self, case_id: int) -> LabCase:
+    def fetch(self, id: int) -> LabCase:
         for saved_case in self.lab_cases:
-            if(saved_case.case_id == case_id):
+            if(saved_case.id == id):
                 return saved_case
         return None
     
     def update(self, case: LabCase):
         for i, saved_case in enumerate(self.lab_cases):
-            if(saved_case.case_id == case.case_id):
+            if(saved_case.id == case.id):
                 self.lab_cases[i] = case

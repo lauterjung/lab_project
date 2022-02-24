@@ -1,11 +1,12 @@
 from model.subject import Subject
 
 class LabCase:
-    case_id: int
+    id: int
+    juridic_cases: list[str]
+    card_numbers: list[str]
         
-    def __init__(self, juridic_cases: list[str], card_numbers: list[str], subjects: list[Subject] = []):
-        self.juridic_cases = juridic_cases
-        self.card_numbers = card_numbers
+    def __init__(self,  name: str, subjects: list[Subject] = []):
+        self.name = name
         self.subjects = subjects
 
     def type_of_case():
