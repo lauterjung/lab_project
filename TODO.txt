@@ -1,27 +1,17 @@
 TODO
-refatorar kits
+
+check_swap
+calculate_locus
+
+trio
+duo
+complexo
 
 criar exemplos de diferentes .csvs (duo, trio, kits com genótipos iguais, kits com genótipos diferentes)
-
 gerador de perfil genético com base em dois kits
-
 enum de SubjectType
-
-classificador de caso (TRIO, DUO, COMPLEXO) conforme subject types
-
 inclusão de LabCases e Subjects no DB. Se tem todos os genótipos, permitir proceder com cálculos.
-
-cálculos de paternidade
-
 testes para as regex
-
-xxxxx tabela de frequencias (leituras, etc)
-
-M F e SP = TRIO
-F e SP/SM = DUO
-!= SP = COMPLEXO
-
-
 
 x ler do(s) csv(s)
 "cadastrar"
