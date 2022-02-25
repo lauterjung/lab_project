@@ -11,7 +11,7 @@ class LabCaseController():
         self.db = db
           
     def register_lab_case(self, case: LabCase):
-        if self.db.fetch(case.case_id) == None:
+        if self.db.fetch(case.name) == None:
             self.db.save(case)
         else:
             self.db.update(case)
@@ -19,7 +19,7 @@ class LabCaseController():
     def import_allele_table(self, case: LabCase, file: str):
         
         with open(file) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
+            csv_reader = csv.reader(csv_file, delimiter = ',')
             lines = []
             for row in csv_reader:
                 lines.append(row)
@@ -45,4 +45,3 @@ class LabCaseController():
                 return subject
         return None
             
-    
