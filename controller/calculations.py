@@ -1,75 +1,71 @@
-gc = ["1", "1"]
-gm = ["1", "2"]
+from model.genotype import Genotype
+
+gc = ["1", "2"]
+gm = ["2", "3"]
 gf = ["1", "2"]
-# gf = ["3", "4"]
+gf = ["3", "4"]
+
+# return Error if maternal mutation, or check for it before calculations
+# relate gc, gm, gf and gg to Genotype class
 
 def calc_trio(gc, gm, gf):
-
-  # caso o pai não compartilha nenhum alelo  
-    if any(allele in gc for allele in gf):
+  # father doesn't share allele
+    if any(allele not in gf for allele in gc):
         return 0
-
-  # qual alelo veio da mãe?  
+    
+    # which allele came from mother? 
     if gc[0] == gc[1]:
         al_cm = [allele for allele in gc if allele in gm][0]
-    else: # criança iJ
-  
+    else: # child iJ
         if len([allele for allele in gc if allele in gm]) == 1:
             al_cm = [allele for allele in gc if allele in gm][0]
-        else: # caso de soma 2, criança iJ, mãe iJ #if(sum(gc %in% gm)==2) 
-    
-            pi = get.freq(gc[0],locus=locus, allele.freq)
-            pj = get.freq(gc[1],locus=locus, allele.freq)
-            
-            if gf[0] == gf[1] | len([allele for allele in gc if allele in gf]) == 2: #pai ii ou iJ
+        else: # if sum == 2, child iJ, mother iJ 
+            pi = get_allele_frequency(locus, gc[0])
+            pj = get_allele_frequency(locus, gc[1])
+            if gf[0] == gf[1] | len([allele for allele in gc if allele in gf]) == 2: # father ii or iJ
                 return(1/(pi+pj))
-            else: # pai Jk
+            else: # father Jk
                 return(1/(2*(pi+pj)))
-    
-    #então o alelo do pai é o pi
+ 
+    # then pi is allele from father
     if gc[0] == gc[1]:
         al_cf = gc[0]
+    elif([allele for allele in gc if allele not in gm][0] in gf):
+        al_cf = [allele for allele in gc if allele not in gm][0]
     else:
-    if(gc[gc!=al.cm] %in% gf){
-    al.cf <- gc[gc!=al.cm]
-    } else{
-    return(0)  #caso o pai possua um alelo em comum, mas não é o APO 
-    }
-  }
+        return(0)  # if shared allele is not obliged paternal allele (OPA) 
+
+    pi = get_allele_frequency(locus, al_cf)
+    # father configuration
+    if(gf[0] == gf[1]): #ii
+        return(1/pi)
+    else: #ij
+        return(1/(2*pi)) # jk already included
     
-  pi <- get.freq(al.cf, locus = locus, allele.freq)
-  
-  #qual a configuração do pai?
-  if(gf[1]==gf[2]){ #ii
-  return(1/pi)
-  } else{ #ij
-    return(1/(2*pi))
-  } #jk já foi tratado
+def calc_duo(gc, gg):
+    # father doesn't share allele
+    if any(allele not in gg for allele in gc):
+        return 0
 
-}
-
-
-for a in gc:
-    if a in gm:
-        res = a
+    # gc = ii
+    if gc[0] == gc[1]:
+        pi = get_allele_frequency(locus, gc[0])
         
-for a in gm:
-    if a in gc:
-        res = a
+        if len([allele for allele in gc if allele in gg]) == 2: # gg = gc = ii
+            return(1/pi)
+        else: # gg = ij
+            return(1/(2*pi))
 
-a for a in gm if a in gc
-
-fruits = ["apple", "banana", "cherry", "kiwi", "mango"]
-
-newlist = [x for x in fruits if "a" in x]
-
-print(newlist) 
-
-a in gc for a in gf
-
-res = [a for a in gc if a in gm] 
-res = [a for a in gm if a in gc][0]
-
- if(sum(gc %in% gm)==1)
- 
- 
+    #gc = ij
+    if len([allele for allele in gc if allele in gg]) == 1: #gg = ii ou ik
+        pi = get_allele_frequency(locus, [allele for allele in gc if allele in gg][0])
+    
+        if gg[0] == gg[1]: # gg = ii
+            return(1/(2*pi))
+        else: # gg = ik
+            return(1/(4*pi))
+      
+    else: # gg = ij
+        pi = get_allele_frequency(locus, gc[0])
+        pj = get_allele_frequency(locus, gc[1])
+        return((pi+pj)/(4*pi*pj))
