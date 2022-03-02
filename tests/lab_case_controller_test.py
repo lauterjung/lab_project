@@ -65,7 +65,6 @@ class LabCaseControllerTest(unittest.TestCase):
         self.assertEquals(len(fetched_case.subjects), 1)
 
         fetched_subject = fetched_case.subjects[0]
-        self.assertEquals(fetched_subject.type, "F")
         self.assertEquals(fetched_subject.name, "UD000000F_VE")
         self.assertEquals(len(fetched_subject.genetic_profile), 4)
         self.assertEquals(fetched_subject.genetic_profile[0].kit, "VE")

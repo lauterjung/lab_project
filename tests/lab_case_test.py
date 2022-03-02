@@ -5,6 +5,8 @@ from model.subject import Subject
 
 class TypeOfCase(unittest.TestCase):
     
+    # TODO use mock for this test, subject type and codification is automatically setted (dependency),
+     
     def test_get_case_type(self):
         case_name = "UD990000"
         
@@ -13,14 +15,12 @@ class TypeOfCase(unittest.TestCase):
         alledged_father_name = case_name+"SP"
         alledged_mother_name = case_name+"SM"
         uncle_name = case_name+"STP1"
-        genotype = []
-        genetic_profile = genotype
 
-        mother = Subject(mother_name, genetic_profile)
-        alledged_mother = Subject(alledged_mother_name, genetic_profile)
-        children = Subject(children_name, genetic_profile)
-        alledged_father = Subject(alledged_father_name, genetic_profile)
-        uncle = Subject(uncle_name, genetic_profile)
+        mother = Subject(mother_name, [])
+        alledged_mother = Subject(alledged_mother_name, [])
+        children = Subject(children_name, [])
+        alledged_father = Subject(alledged_father_name, [])
+        uncle = Subject(uncle_name, [])
         
         lab_case_TRIO = LabCase(case_name)
         lab_case_TRIO.subjects = [mother, children, alledged_father]

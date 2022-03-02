@@ -1,6 +1,6 @@
 from enum import Enum
 
-from model.subject import Subject
+from model.subject import Subject, SubjectType
 
 class LabCaseType(Enum):
     invalid = 1
@@ -21,19 +21,19 @@ class LabCase:
         
         individual_types = []
         for subject in self.subjects:
-            individual_types.append(subject.type)
-        
-        if "F" not in individual_types:
+            individual_types.append(subject.subject_type.name)
+                                                            
+        if SubjectType.child.name not in individual_types:
             return LabCaseType.invalid
         
         if len(individual_types) == 2:
-            if all(x in individual_types for x in ["SM", "F"]) or \
-               all(x in individual_types for x in ["F", "SP"]):
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]) or \
+               all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
                    return LabCaseType.duo
         
         if len(individual_types) == 3:
-            if all(x in individual_types for x in ["SM", "F", "P"]) or \
-               all(x in individual_types for x in ["M", "F", "SP"]):
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]) or \
+               all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
                     return LabCaseType.trio
         
         return LabCaseType.complex
