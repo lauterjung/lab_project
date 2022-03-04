@@ -13,7 +13,7 @@ class LabCase:
     card_numbers: list[str]
     subjects: list[Subject]
     
-    def __init__(self,  name: str, ):
+    def __init__(self,  name: str):
         self.name = name
         self.subjects = []
 
