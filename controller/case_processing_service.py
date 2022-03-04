@@ -1,6 +1,6 @@
 from model.lab_case import LabCase 
 
-class CaseProcessingService:
+class CaseProcessingService: # do we pass a LabCase here (init) or in the functions/methods?
     def __init__(self):
         pass
     
@@ -9,9 +9,9 @@ class CaseProcessingService:
         pass
 
     def set_case_subtype(self):
-        #SWAP, MUTATION, RECOGNITION, EXCLUSION
+        # SWAP, MUTATION, RECOGNITION, EXCLUSION
         pass
     
-    def check_amelogenin_swap(self) -> bool:
+    def check_amelogenin_swap(self, lab_case: LabCase) -> bool:
         pass
     # if gender male/female, amel

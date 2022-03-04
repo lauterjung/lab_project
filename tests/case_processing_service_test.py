@@ -1,13 +1,15 @@
 import unittest
+from controller.case_processing_service import CaseProcessingService
 from model.genotype import Genotype
+from model.lab_case import LabCase
 
 from model.subject import Subject
 
 class CaseProcessingServiceTest(unittest.TestCase):
     def test_amelogenin_swap(self):
-        # # # assertTrue?
+        case_processing_service = CaseProcessingService
+        case_name = "UD990000"
         
-        # case_name = "UD990000"
         # mother_name = case_name+"M"
         # children_name = case_name+"F"
         # father_name = case_name+"SP"
@@ -39,7 +41,14 @@ class CaseProcessingServiceTest(unittest.TestCase):
         # swapped_maternal_grandmother = Subject(maternal_grandmother_name, [male_genotype])
         # swapped_paternal_grandfather = Subject(paternal_grandfather_name, [female_genotype])
         # swapped_paternal_grandmother = Subject(paternal_grandmother_name, [male_genotype])
+        correct_case = LabCase(case_name)
+        correct_case.subjects.append()
         
+        swapped_case = LabCase(case_name)
+        swapped_case.subjects.append()
+        
+        self.assertTrue(case_processing_service.check_amelogenin_swap(swapped_case))
+        self.assertFalse(case_processing_service.check_amelogenin_swap(correct_case))
         pass
     
     def test_set_case_subtype(self):
