@@ -1,6 +1,6 @@
 from model.subject import Subject
 
-class FullCaseTest():
+class AvailableSubjects():
     case_name = "UD990000"
     mother_name = case_name+"M"
     child_name = case_name+"F"
@@ -43,16 +43,16 @@ class FullCaseTest():
     alledged_father = Subject(alledged_father_name, [])
     alledged_mother = Subject(alledged_mother_name, [])
     father = Subject(father_name, [])
-    biologic_child_1 =  Subject(biologic_child_1_name, [])
-    biologic_child_2 =  Subject(biologic_child_2_name, [])
-    auxiliary_mother_1 =  Subject(auxiliary_mother_1_name, [])
-    auxiliary_mother_2 =  Subject(auxiliary_mother_2_name, [])
-    auxiliary_father_1 =  Subject(auxiliary_father_1_name, [])
-    auxiliary_father_2 =  Subject(auxiliary_father_2_name, [])
-    auxiliary_child_1_1 =  Subject(auxiliary_child_1_1_name, [])
-    auxiliary_child_1_2 =  Subject(auxiliary_child_1_2_name, [])
-    auxiliary_child_2_1 =  Subject(auxiliary_child_2_1_name, [])
-    auxiliary_child_2_2 =  Subject(auxiliary_child_2_2_name, [])
+    biologic_child_1 = Subject(biologic_child_1_name, [])
+    biologic_child_2 = Subject(biologic_child_2_name, [])
+    auxiliary_mother_1 = Subject(auxiliary_mother_1_name, [])
+    auxiliary_mother_2 = Subject(auxiliary_mother_2_name, [])
+    auxiliary_father_1 = Subject(auxiliary_father_1_name, [])
+    auxiliary_father_2 = Subject(auxiliary_father_2_name, [])
+    auxiliary_child_1_1 = Subject(auxiliary_child_1_1_name, [])
+    auxiliary_child_1_2 = Subject(auxiliary_child_1_2_name, [])
+    auxiliary_child_2_1 = Subject(auxiliary_child_2_1_name, [])
+    auxiliary_child_2_2 = Subject(auxiliary_child_2_2_name, [])
     maternal_grandmother = Subject(maternal_grandmother_name, [])
     alledged_maternal_grandmother = Subject(alledged_maternal_grandmother_name, [])
     maternal_grandfather = Subject(maternal_grandfather_name, [])
