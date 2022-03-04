@@ -11,3 +11,7 @@ class CaseProcessingService:
     def set_case_subtype(self):
         #SWAP, MUTATION, RECOGNITION, EXCLUSION
         pass
+    
+    def check_amelogenin_swap(self) -> bool:
+        pass
+    # if gender male/female, amel

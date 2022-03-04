@@ -39,7 +39,7 @@ class LabCaseController():
             else:
                 case.subjects.append(Subject(name, [genetic_profile]))                    
   
-    def __get_subject(self, case, name):
+    def __get_subject(self, case, name) -> Subject:
         for subject in case.subjects:
             if subject.name == name:
                 return subject

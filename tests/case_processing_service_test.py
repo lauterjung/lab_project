@@ -4,15 +4,7 @@ from model.genotype import Genotype
 from model.subject import Subject
 
 class CaseProcessingServiceTest(unittest.TestCase):
-    def test_check_swap_amel(self):
-        # # # separate for duo, trio, complex
-        
-        # # # Is there a better way to construct whole cases? Maybe .csv models in test/assets?
-        # # # However it would depend on other tests/implementations
-        
-        # # # create complex cases with and without swaps
-        # # # create duo cases with and without swaps
-        # # # create trio cases with M-F swap, F-SP swap and no swap
+    def test_amelogenin_swap(self):
         # # # assertTrue?
         
         # case_name = "UD990000"

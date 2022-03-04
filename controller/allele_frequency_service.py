@@ -32,7 +32,7 @@ class AlleleFrequencyService:
                 
             self.db.save(locus)
         
-    def get_allele_frequency(self, locus_name, allele_name):
+    def get_allele_frequency(self, locus_name, allele_name) -> float:
         locus = self.db.fetch(locus_name)
         if locus != None:
             if allele_name in locus.alleles:
