@@ -115,4 +115,5 @@ class TypeOfSubject(unittest.TestCase):
         self.assertEqual(self.all_subjects.another_1.gender, Gender.either)
         self.assertEqual(self.all_subjects.another_2.gender, Gender.either)
         
-        
+    def tearDown(self):
+        self.all_subjects.dispose()        
