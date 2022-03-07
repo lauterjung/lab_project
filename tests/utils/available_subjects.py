@@ -37,6 +37,23 @@ class AvailableSubjects():
     another_1_name = case_name+"OUT1"
     another_2_name = case_name+"OUT2"
 
+    swapped_mother_name = case_name+"M"
+    swapped_alledged_father_name = case_name+"SP"
+    swapped_alledged_mother_name = case_name+"SM"
+    swapped_father_name = case_name+"P"
+    swapped_auxiliary_mother_1_name = case_name+"_1M"
+    swapped_auxiliary_mother_2_name = case_name+"_2M"
+    swapped_auxiliary_father_1_name = case_name+"_1P"
+    swapped_auxiliary_father_2_name = case_name+"_2P"
+    swapped_maternal_grandmother_name = case_name+"MM"
+    swapped_alledged_maternal_grandmother_name = case_name+"SMM"
+    swapped_maternal_grandfather_name = case_name+"PM"
+    swapped_alledged_maternal_grandfather_name = case_name+"SPM"
+    swapped_paternal_grandmother_name = case_name+"MP"
+    swapped_alledged_paternal_grandmother_name = case_name+"SMP"
+    swapped_paternal_grandfather_name = case_name+"PP"
+    swapped_alledged_paternal_grandfather_name = case_name+"SPP"
+
     mother = Subject(mother_name, [])
     child = Subject(child_name, [])
     child_2 = Subject(child_2_name, [])
@@ -71,3 +88,20 @@ class AvailableSubjects():
     alledged_paternal_uncle_2 = Subject(alledged_paternal_uncle_2_name, [])
     another_1 = Subject(another_1_name, [])
     another_2 = Subject(another_2_name, [])
+
+    swapped_mother = Subject(swapped_mother_name, [])
+    swapped_alledged_father = Subject(swapped_alledged_father_name, [])
+    swapped_alledged_mother = Subject(swapped_alledged_mother_name, [])
+    swapped_father = Subject(swapped_father_name, [])
+    swapped_auxiliary_mother_1 = Subject(swapped_auxiliary_mother_1_name, [])
+    swapped_auxiliary_mother_2 = Subject(swapped_auxiliary_mother_2_name, [])
+    swapped_auxiliary_father_1 = Subject(swapped_auxiliary_father_1_name, [])
+    swapped_auxiliary_father_2 = Subject(swapped_auxiliary_father_2_name, [])
+    swapped_maternal_grandmother = Subject(swapped_maternal_grandmother_name, [])
+    swapped_alledged_maternal_grandmother = Subject(swapped_alledged_maternal_grandmother_name, [])
+    swapped_maternal_grandfather = Subject(swapped_maternal_grandfather_name, [])
+    swapped_alledged_maternal_grandfather = Subject(swapped_alledged_maternal_grandfather_name, [])
+    swapped_paternal_grandmother = Subject(swapped_paternal_grandmother_name, [])
+    swapped_alledged_paternal_grandmother = Subject(swapped_alledged_paternal_grandmother_name, [])
+    swapped_paternal_grandfather = Subject(swapped_paternal_grandfather_name, [])
+    swapped_alledged_paternal_grandfather = Subject(swapped_alledged_paternal_grandfather_name, [])
