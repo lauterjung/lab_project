@@ -1,11 +1,11 @@
 import unittest
 
 from model.subject import Gender, SubjectType
-from tests.utils.available_subjects import AvailableSubjects
+from tests.utils.test_setup import TestSetup
 
 class TypeOfSubject(unittest.TestCase):
     def setUp(self):
-        self.all_subjects = AvailableSubjects()
+        self.all_subjects = TestSetup()
         
     def test_set_subject_codification(self):
         self.assertEqual(self.all_subjects.mother.codification, "M")
@@ -114,6 +114,3 @@ class TypeOfSubject(unittest.TestCase):
         self.assertEqual(self.all_subjects.alledged_paternal_uncle_2.gender, Gender.either)
         self.assertEqual(self.all_subjects.another_1.gender, Gender.either)
         self.assertEqual(self.all_subjects.another_2.gender, Gender.either)
-        
-    def tearDown(self):
-        self.all_subjects.dispose()
