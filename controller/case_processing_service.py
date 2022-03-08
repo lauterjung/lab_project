@@ -2,14 +2,14 @@ from model.lab_case import LabCase
 from model.subject import Gender, Subject 
 
 class CaseProcessingService: # do we pass a LabCase here (init) or in the functions/methods?
-    def __init__(self):
+    def __init__(self) -> None:
         pass
     
-    def check_swap(lab_case: LabCase):
+    def check_swap(lab_case: LabCase) -> None:
         # foreach subject, verify type and amel genotype
         pass
 
-    def set_case_subtype():
+    def set_case_subtype() -> None:
         # SWAP, MUTATION, RECOGNITION, EXCLUSION
         pass
     

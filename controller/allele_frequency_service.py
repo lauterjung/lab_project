@@ -5,10 +5,10 @@ from controller.database import LocusDB
 
 
 class AlleleFrequencyService:
-    def __init__(self, db: LocusDB):
+    def __init__(self, db: LocusDB) -> None:
         self.db = db
         
-    def read_allele_frequency(self, file):
+    def read_allele_frequency(self, file) -> None:
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter='\t')
             lines = []

@@ -10,7 +10,6 @@ class CaseProcessingServiceTest(unittest.TestCase):
     def setUp(self):
         self.test_setup = TestSetup()
 
-
     def test_check_case_amelogenin_swap(self):
         case_processing_service = CaseProcessingService
 

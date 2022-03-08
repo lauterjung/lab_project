@@ -7,16 +7,16 @@ from model.subject import Subject
 from controller.database import LabCaseDB
 
 class LabCaseController():
-    def __init__(self, db: LabCaseDB):
+    def __init__(self, db: LabCaseDB) -> None:
         self.db = db
           
-    def register_lab_case(self, case: LabCase):
+    def register_lab_case(self, case: LabCase) -> None:
         if self.db.fetch(case.name) == None:
             self.db.save(case)
         else:
             self.db.update(case)
     
-    def import_allele_table(self, case: LabCase, file: str):
+    def import_allele_table(self, case: LabCase, file: str) -> None:
         
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')

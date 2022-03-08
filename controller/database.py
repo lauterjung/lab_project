@@ -3,19 +3,19 @@ from model.locus import Locus
 
 class LabCaseDB:
     
-    def save(case: LabCase):
+    def save(case: LabCase) -> None:
         pass
     
     def fetch(case: int) -> LabCase:
         pass
 
-    def update(case: LabCase):
+    def update(case: LabCase) -> None:
         # dar update baseado em chave _id
         pass
 
 class LocusDB:
     
-    def save(locus: Locus):
+    def save(locus: Locus) -> None:
         pass
     
     def fetch(locus: str) -> Locus:

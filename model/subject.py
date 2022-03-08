@@ -31,7 +31,7 @@ class Subject():
     subject_type: SubjectType
     gender: Gender
     
-    def __init__(self, name: str, genetic_profile: list[Genotype]):
+    def __init__(self, name: str, genetic_profile: list[Genotype]) -> None:
         self.name = name
         self.genetic_profile = genetic_profile # maybe remove from init or default empty list?
         self.codification = self.__set_subject_codification()
