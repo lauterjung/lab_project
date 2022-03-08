@@ -114,3 +114,10 @@ class TypeOfSubject(unittest.TestCase):
         self.assertEqual(self.test_setup.alledged_paternal_uncle_2.gender, Gender.either)
         self.assertEqual(self.test_setup.another_1.gender, Gender.either)
         self.assertEqual(self.test_setup.another_2.gender, Gender.either)
+
+    def test_check_subject_amelogenin_swap(self):
+        self.assertTrue(self.test_setup.swapped_mother.check_subject_amelogenin_swap())
+        self.assertTrue(self.test_setup.swapped_alledged_father.check_subject_amelogenin_swap())
+        self.assertFalse(self.test_setup.mother.check_subject_amelogenin_swap())
+        self.assertFalse(self.test_setup.alledged_father.check_subject_amelogenin_swap())
+        self.assertFalse(self.test_setup.child.check_subject_amelogenin_swap())

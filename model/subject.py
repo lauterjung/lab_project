@@ -86,3 +86,12 @@ class Subject():
             return Gender.female
         else:
             return Gender.either
+    
+    def check_subject_amelogenin_swap(self) -> bool:
+        # can we access Amelogenin locus directly and get its alleles?
+        for genotype in self.genetic_profile:
+            if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and self.gender == Gender.female) or \
+               (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "X" and self.gender == Gender.male):
+                return True
+            else:
+                return False
