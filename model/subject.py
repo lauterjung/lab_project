@@ -96,5 +96,9 @@ class Subject():
             else:
                 return False
 
-    def get_genotype(self) -> Genotype:
-        pass
+    def get_alleles_from_locus(self, locus) -> list[str]:
+        for genotype in self.genetic_profile:
+            if genotype.locus == locus:
+                return [genotype.allele_1, genotype.allele_2]
+            else:
+                return None

@@ -121,3 +121,7 @@ class TypeOfSubject(unittest.TestCase):
         self.assertFalse(self.test_setup.mother.check_subject_amelogenin_swap())
         self.assertFalse(self.test_setup.alledged_father.check_subject_amelogenin_swap())
         self.assertFalse(self.test_setup.child.check_subject_amelogenin_swap())
+
+    # TODO: improve this test
+    def test_get_allele_from_locus(self):
+        self.assertEquals(self.test_setup.child.get_alleles_from_locus("Amel"), ["X", "Y"])
