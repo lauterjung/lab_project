@@ -95,3 +95,6 @@ class Subject():
                 return True
             else:
                 return False
+
+    def get_genotype(self) -> Genotype:
+        pass
