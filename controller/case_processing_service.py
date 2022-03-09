@@ -6,10 +6,10 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
         pass
     
     # TODO: maternity trio tests (C, AM, F)
-    def check_swap_trio(lab_case: LabCase) -> list[int]:
+    def check_swap_trio(self, lab_case: LabCase) -> list[int]:
         
         # is this OK? why can't I use this method?
-        amelogenin_swap = CaseProcessingService.check_case_amelogenin_swap(lab_case)
+        amelogenin_swap = self.check_case_amelogenin_swap(lab_case)
 
         # function get_subject(SubjectType)? 1 vs. 5 loops, performance vs. organization
         # if so, in model\lab_case.py or controller\lab_case_controller.py?
@@ -25,33 +25,36 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
             # elif subject.subject_type.name == SubjectType.alledged_mother.name:
             #     alledged_mother = subject
 
+
+
         child_x_alledged_father_count = 0
         mother_x_alledged_father_count = 0
         mother_x_child_count = 0
+        mother_genotype = mother.get_genetic_profile_as_dictionary()
+        alledged_father_genotype = alledged_father.get_genetic_profile_as_dictionary()        
+
         for genotype in child.genetic_profile:
             if genotype.exclude_from_calculations:
                 continue
 
-            gc = child.get_alleles_from_locus(genotype.locus)
-            gm = mother.get_alleles_from_locus(genotype.locus)
-            gf = alledged_father.get_alleles_from_locus(genotype.locus)   
+            gc = [genotype.allele_1, genotype.allele_2]
+            gm = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
+            gf = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
+            # gc = child.get_alleles_from_locus(genotype.locus)
+            # gm = mother.get_alleles_from_locus(genotype.locus)
+            # gf = alledged_father.get_alleles_from_locus(genotype.locus)   
            
         if any(allele not in gf for allele in gm):    
             mother_x_alledged_father_count += 1
         if any(allele not in gc for allele in gm):
             mother_x_child_count += 1
-
-        # not OPA, any
-        if any(allele not in gf for allele in gc):
-            child_x_alledged_father_count += 1
-        # considering OPA
+    
         if len([allele for allele in gc if allele in gm]) == 2:
             if any(allele not in gf for allele in gc):
                 child_x_alledged_father_count += 1
         elif len([allele for allele in gc if allele in gm]) == 1:
             if [allele for allele in gc if allele not in gm][0] in gf:
                 child_x_alledged_father_count += 1
-
 
         return [amelogenin_swap, mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]
 
