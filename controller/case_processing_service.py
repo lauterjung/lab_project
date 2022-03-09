@@ -5,8 +5,12 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
     def __init__(self) -> None:
         pass
     
+    # TODO: maternity trio tests (C, AM, F)
     def check_swap_trio(lab_case: LabCase) -> list[int]:
         
+        # is this OK? why can't I use this method?
+        amelogenin_swap = CaseProcessingService.check_case_amelogenin_swap(lab_case)
+
         # function get_subject(SubjectType)? 1 vs. 5 loops, performance vs. organization
         # if so, in model\lab_case.py or controller\lab_case_controller.py?
         for subject in lab_case.subjects:
@@ -14,34 +18,33 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
                 child = subject
             elif subject.subject_type.name == SubjectType.mother.name:
                 mother = subject
-            elif subject.subject_type.name == SubjectType.father.name:
-                father = subject
             elif subject.subject_type.name == SubjectType.alledged_father.name:
                 alledged_father = subject
-            elif subject.subject_type.name == SubjectType.alledged_mother.name:
-                alledged_mother = subject
-        
-        # TODO: get_genotype
+            # elif subject.subject_type.name == SubjectType.father.name:
+            #     father = subject
+            # elif subject.subject_type.name == SubjectType.alledged_mother.name:
+            #     alledged_mother = subject
 
+        child_x_alledged_father_count = 0
+        mother_x_alledged_father_count = 0
+        mother_x_child_count = 0
         for genotype in child.genetic_profile:
-            if not genotype.exclude_from_calculations:
-                gc = child.get_genotype(genotype.locus)
-                gm = mother.get_genotype(genotype.locus)
-                gf = alledged_father.get_genotype(genotype.locus)
-        # loci_names = []
-        # for locus in loci_names:        
+            if genotype.exclude_from_calculations:
+                continue
+
+            gc = child.get_alleles_from_locus(genotype.locus)
+            gm = mother.get_alleles_from_locus(genotype.locus)
+            gf = alledged_father.get_alleles_from_locus(genotype.locus)   
            
-        # return [amelogenin_comparison, child_alledged_father_comparison, mother_alledged_father_comparison, mother_child_comparison]
+        if True:
+            child_x_alledged_father_count += 1
+        if True:        
+            mother_x_alledged_father_count += 1
+        if True:
+            mother_x_child_count += 1
+
+        return [amelogenin_swap, child_x_alledged_father_count, mother_x_alledged_father_count, mother_x_child_count]
         pass
-
-
-
-
-
-
-
-
-
 
     def set_case_subtype() -> None:
         # SWAP, MUTATION, RECOGNITION, EXCLUSION

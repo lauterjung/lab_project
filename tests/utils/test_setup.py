@@ -110,9 +110,7 @@ class TestSetup():
     
     male_genotype = Genotype("VE", "Amel", "X", "Y")
     female_genotype = Genotype("VE", "Amel", "X", "X")
-    
-            
-    child.genetic_profile.append(male_genotype)
+         
     child.genetic_profile.append(male_genotype)
     child_2.genetic_profile.append(male_genotype)
     biologic_child_1.genetic_profile.append(male_genotype)
