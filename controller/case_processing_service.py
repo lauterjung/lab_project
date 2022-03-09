@@ -36,15 +36,24 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
             gm = mother.get_alleles_from_locus(genotype.locus)
             gf = alledged_father.get_alleles_from_locus(genotype.locus)   
            
-        if True:
-            child_x_alledged_father_count += 1
-        if True:        
+        if any(allele not in gf for allele in gm):    
             mother_x_alledged_father_count += 1
-        if True:
+        if any(allele not in gc for allele in gm):
             mother_x_child_count += 1
 
-        return [amelogenin_swap, child_x_alledged_father_count, mother_x_alledged_father_count, mother_x_child_count]
-        pass
+        # not OPA, any
+        if any(allele not in gf for allele in gc):
+            child_x_alledged_father_count += 1
+        # considering OPA
+        if len([allele for allele in gc if allele in gm]) == 2:
+            if any(allele not in gf for allele in gc):
+                child_x_alledged_father_count += 1
+        elif len([allele for allele in gc if allele in gm]) == 1:
+            if [allele for allele in gc if allele not in gm][0] in gf:
+                child_x_alledged_father_count += 1
+
+
+        return [amelogenin_swap, mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]
 
     def set_case_subtype() -> None:
         # SWAP, MUTATION, RECOGNITION, EXCLUSION
