@@ -34,18 +34,16 @@ class CaseProcessingService: # do we pass a LabCase here (init) or in the functi
             gm = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
             gf = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
            
-        if any(allele not in gf for allele in gm):    
-            mother_x_alledged_father_count += 1
-        if any(allele not in gc for allele in gm):
-            mother_x_child_count += 1
-    
+            if all(allele not in gf for allele in gm):    
+                mother_x_alledged_father_count += 1
+            if all(allele not in gc for allele in gm):
+                mother_x_child_count += 1
 
-        if len([allele for allele in gc if allele in gm]) == 1:
-            if [allele for allele in gc if allele not in gm][0] in gf:
-                child_x_alledged_father_count += 1
-        else:
-            if any(allele not in gf for allele in gc):
-                child_x_alledged_father_count += 1
+            if len([allele for allele in gc if allele in gm]) == 1:
+                if [allele for allele in gc if allele not in gm][0] not in gf:
+                    child_x_alledged_father_count += 1
+            elif all(allele not in gf for allele in gc):
+                    child_x_alledged_father_count += 1
 
 
         return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]
