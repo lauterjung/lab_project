@@ -19,5 +19,17 @@ class CaseProcessingServiceTest(unittest.TestCase):
         self.assertFalse(case_processing_service.check_case_amelogenin_swap(self.test_setup.correct_case_duo))
         self.assertFalse(case_processing_service.check_case_amelogenin_swap(self.test_setup.no_gender_case_complex))
     
+    def test_check_swap_trio(self):
+        case_processing_service = CaseProcessingService
+
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_000), [0, 0, 0]) 
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_200), [2, 0, 0])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_400), [4, 0, 0])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_020), [0, 2, 0])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_040), [0, 4, 0])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_002), [0, 0, 2])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_004), [0, 0, 4])
+        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_111), [1, 1, 1])
+
     def test_set_case_subtype(self):
         pass
