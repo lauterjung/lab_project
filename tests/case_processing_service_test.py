@@ -10,6 +10,15 @@ class CaseProcessingServiceTest(unittest.TestCase):
     def setUp(self):
         self.test_setup = TestSetup()
 
+    def test_check_subject_amelogenin_swap(self):
+        case_processing_service = CaseProcessingService
+
+        self.assertTrue(case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_mother))
+        self.assertTrue(case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_alledged_father))
+        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.mother))
+        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.alledged_father))
+        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.child))
+
     def test_check_case_amelogenin_swap(self):
         case_processing_service = CaseProcessingService
 

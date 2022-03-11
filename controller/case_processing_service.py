@@ -5,6 +5,14 @@ class CaseProcessingService:
     def __init__(self):
         pass
     
+    def check_subject_amelogenin_swap(subject: Subject) -> bool:
+        for genotype in subject.genetic_profile:
+            if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and subject.gender == Gender.female) or \
+               (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "X" and subject.gender == Gender.male):
+                return True
+            else:
+                return False
+
     # TODO: maternity trio tests (C, AM, F)
     def check_swap_trio(lab_case: LabCase) -> list[int]:
 
@@ -52,8 +60,9 @@ class CaseProcessingService:
         # SWAP, MUTATION, RECOGNITION, EXCLUSION
         pass
     
+    # is this OK?
     def check_case_amelogenin_swap(lab_case: LabCase) -> bool:
-        if any(subject.check_subject_amelogenin_swap() for subject in lab_case.subjects):
+        if any(CaseProcessingService.check_subject_amelogenin_swap(subject) for subject in lab_case.subjects):
             return True
         else:
             return False

@@ -10,7 +10,7 @@ gf = ["3", "4"]
 
 def calc_trio(gc, gm, gf) -> float:
   # father doesn't share allele
-    if any(allele not in gf for allele in gc):
+    if all(allele not in gf for allele in gc):
         return 0
     
     # which allele came from mother? 
@@ -44,7 +44,7 @@ def calc_trio(gc, gm, gf) -> float:
     
 def calc_duo(gc, gg) -> float:
     # father doesn't share allele
-    if any(allele not in gg for allele in gc):
+    if all(allele not in gg for allele in gc):
         return 0
 
     # gc = ii

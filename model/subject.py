@@ -86,14 +86,6 @@ class Subject():
             return Gender.female
         else:
             return Gender.either
-    
-    def check_subject_amelogenin_swap(self) -> bool:
-        for genotype in self.genetic_profile:
-            if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and self.gender == Gender.female) or \
-               (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "X" and self.gender == Gender.male):
-                return True
-            else:
-                return False
             
     def get_genetic_profile_as_dictionary(self) -> dict[str: Genotype]:
         dict = {}
