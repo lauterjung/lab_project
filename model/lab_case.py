@@ -13,11 +13,11 @@ class LabCase:
     card_numbers: list[str]
     subjects: list[Subject]
     
-    def __init__(self,  name: str, ):
+    def __init__(self,  name: str):
         self.name = name
         self.subjects = []
 
-    def type_of_case(self):
+    def type_of_case(self) -> LabCaseType:
         
         individual_types = []
         for subject in self.subjects:

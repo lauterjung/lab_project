@@ -8,9 +8,9 @@ gf = ["3", "4"]
 # return Error if maternal mutation, or check for it before calculations
 # relate gc, gm, gf and gg to Genotype class
 
-def calc_trio(gc, gm, gf):
+def calc_trio(gc, gm, gf) -> float:
   # father doesn't share allele
-    if any(allele not in gf for allele in gc):
+    if all(allele not in gf for allele in gc):
         return 0
     
     # which allele came from mother? 
@@ -42,9 +42,9 @@ def calc_trio(gc, gm, gf):
     else: #ij
         return(1/(2*pi)) # jk already included
     
-def calc_duo(gc, gg):
+def calc_duo(gc, gg) -> float:
     # father doesn't share allele
-    if any(allele not in gg for allele in gc):
+    if all(allele not in gg for allele in gc):
         return 0
 
     # gc = ii

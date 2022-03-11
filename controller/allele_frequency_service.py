@@ -8,7 +8,7 @@ class AlleleFrequencyService:
     def __init__(self, db: LocusDB):
         self.db = db
         
-    def read_allele_frequency(self, file):
+    def read_allele_frequency(self, file) -> None:
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter='\t')
             lines = []
@@ -32,7 +32,7 @@ class AlleleFrequencyService:
                 
             self.db.save(locus)
         
-    def get_allele_frequency(self, locus_name, allele_name):
+    def get_allele_frequency(self, locus_name, allele_name) -> float:
         locus = self.db.fetch(locus_name)
         if locus != None:
             if allele_name in locus.alleles:

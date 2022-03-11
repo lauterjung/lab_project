@@ -41,7 +41,7 @@ class Subject():
     def __set_subject_codification(self) -> str:
         return re.findall(r"(?<=UD\d{6})_?[a-zA-Z0-9]+", self.name)[0]
         
-    def __set_subject_type(self) -> str:
+    def __set_subject_type(self) -> SubjectType:
         if self.codification == "M":
             return SubjectType.mother
         elif bool(re.search(r'F\d*$', self.codification)):
@@ -75,7 +75,7 @@ class Subject():
         elif bool(re.search(r'OUT\d*', self.codification)):
             return SubjectType.another
     
-    def __set_subject_gender(self) -> str:
+    def __set_subject_gender(self) -> Gender:
         if self.subject_type == SubjectType.alledged_father or self.subject_type == SubjectType.father or \
            self.subject_type == SubjectType.auxiliary_father or self.subject_type == SubjectType.maternal_grandfather or \
            self.subject_type == SubjectType.paternal_grandfather:
@@ -86,3 +86,9 @@ class Subject():
             return Gender.female
         else:
             return Gender.either
+            
+    def get_genetic_profile_as_dictionary(self) -> dict[str: Genotype]:
+        dict = {}
+        for genotype in self.genetic_profile:
+            dict[genotype.locus] = genotype
+        return(dict)

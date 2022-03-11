@@ -10,13 +10,13 @@ class LabCaseController():
     def __init__(self, db: LabCaseDB):
         self.db = db
           
-    def register_lab_case(self, case: LabCase):
+    def register_lab_case(self, case: LabCase) -> None:
         if self.db.fetch(case.name) == None:
             self.db.save(case)
         else:
             self.db.update(case)
     
-    def import_allele_table(self, case: LabCase, file: str):
+    def import_allele_table(self, case: LabCase, file: str) -> None:
         
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')
@@ -39,7 +39,7 @@ class LabCaseController():
             else:
                 case.subjects.append(Subject(name, [genetic_profile]))                    
   
-    def __get_subject(self, case, name):
+    def __get_subject(self, case, name) -> Subject:
         for subject in case.subjects:
             if subject.name == name:
                 return subject
