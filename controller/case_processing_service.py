@@ -42,15 +42,22 @@ class CaseProcessingService:
             gm = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
             gf = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
            
-            if all(allele not in gf for allele in gm):    
+            # if all(allele not in gf for allele in gm):
+            if not set(gf) & set(gm):      
                 mother_x_alledged_father_count += 1
-            if all(allele not in gc for allele in gm):
+            # if all(allele not in gc for allele in gm):
+            if not set(gc) & set(gm):  
                 mother_x_child_count += 1
 
-            if len([allele for allele in gc if allele in gm]) == 1:
-                if [allele for allele in gc if allele not in gm][0] not in gf:
+            # if len([allele for allele in gc if allele in gm]) == 1:
+                # if [allele for allele in gc if allele not in gm][0] not in gf:
+                    # child_x_alledged_father_count += 1
+            if len(set(gc) & set(gm)) == 1:
+                # if not ((set(gc) - set(gm)) & set(gf)):
+                if list(set(gc) - set(gm))[0] not in gf:
                     child_x_alledged_father_count += 1
-            elif all(allele not in gf for allele in gc):
+            # elif all(allele not in gf for allele in gc):
+            elif not set(gc) & set(gf):
                     child_x_alledged_father_count += 1
 
 
