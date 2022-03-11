@@ -5,7 +5,7 @@ from controller.database import LocusDB
 
 
 class AlleleFrequencyService:
-    def __init__(self, db: LocusDB) -> None:
+    def __init__(self, db: LocusDB):
         self.db = db
         
     def read_allele_frequency(self, file) -> None:

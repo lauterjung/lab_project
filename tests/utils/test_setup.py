@@ -178,7 +178,6 @@ class TestSetup():
     no_gender_case_complex.subjects.extend([child, paternal_uncle_1, maternal_uncle_1, another_1])
 
     # check_swap_trio
-
     vWA_1_2 = Genotype("VE", "vWA", "1", "2")
     vWA_1_3 = Genotype("VE", "vWA", "1", "3")
     vWA_1_4 = Genotype("VE", "vWA", "1", "4")

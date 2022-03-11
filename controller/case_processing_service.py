@@ -1,8 +1,8 @@
 from model.lab_case import LabCase
 from model.subject import Gender, Subject, SubjectType 
 
-class CaseProcessingService: # do we pass a LabCase here (init) or in the functions/methods?
-    def __init__(self) -> None:
+class CaseProcessingService:
+    def __init__(self):
         pass
     
     # TODO: maternity trio tests (C, AM, F)

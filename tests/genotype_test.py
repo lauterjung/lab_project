@@ -8,3 +8,4 @@ class GenotypeTest(unittest.TestCase):
 
     def test_set_exclude_from_calculations(self):
         self.assertTrue(self.test_setup.male_genotype.exclude_from_calculations)
+        self.assertFalse(self.test_setup.vWA_1_2.exclude_from_calculations)

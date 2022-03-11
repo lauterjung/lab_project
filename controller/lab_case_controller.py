@@ -7,7 +7,7 @@ from model.subject import Subject
 from controller.database import LabCaseDB
 
 class LabCaseController():
-    def __init__(self, db: LabCaseDB) -> None:
+    def __init__(self, db: LabCaseDB):
         self.db = db
           
     def register_lab_case(self, case: LabCase) -> None:

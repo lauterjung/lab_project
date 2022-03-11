@@ -1,7 +1,7 @@
 class Genotype:
     exclude_from_calculations: bool
 
-    def __init__(self, kit: str, locus: str, allele_1: str, allele_2: str) -> None:
+    def __init__(self, kit: str, locus: str, allele_1: str, allele_2: str):
         self.kit = kit
         self.locus = locus
         self.allele_1 = allele_1
@@ -9,7 +9,7 @@ class Genotype:
         self.exclude_from_calculations = self.__set_exclude_from_calc()
     
     def __set_exclude_from_calc(self) -> bool:
-        EXCLUDE_FROM_CALC = ["Amel", "Yindel",  "DYS391", "DYS576", "DYS570"]
+        EXCLUDE_FROM_CALC = ["Amel", "Yindel", "DYS391", "DYS576", "DYS570"]
         
         if self.locus in EXCLUDE_FROM_CALC:
             return True

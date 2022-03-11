@@ -31,7 +31,7 @@ class Subject():
     subject_type: SubjectType
     gender: Gender
     
-    def __init__(self, name: str, genetic_profile: list[Genotype]) -> None:
+    def __init__(self, name: str, genetic_profile: list[Genotype]):
         self.name = name
         self.genetic_profile = genetic_profile # maybe remove from init or default empty list?
         self.codification = self.__set_subject_codification()
@@ -94,13 +94,6 @@ class Subject():
                 return True
             else:
                 return False
-
-    def get_alleles_from_locus(self, locus) -> list[str]:
-        for genotype in self.genetic_profile:
-            if genotype.locus == locus:
-                return [genotype.allele_1, genotype.allele_2]
-            else:
-                return None
             
     def get_genetic_profile_as_dictionary(self) -> dict[str: Genotype]:
         dict = {}
