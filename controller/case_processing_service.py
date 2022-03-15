@@ -1,5 +1,14 @@
-from model.lab_case import LabCase
+from enum import Enum
+from model.lab_case import LabCase, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
+
+class LabCaseSubType(Enum):
+    ready = 1
+    exclusion = 2
+    swap = 3
+    mutation_mother = 4
+    mutation_father = 5
+    other = 99 # just in case to help debugging
 
 class CaseProcessingService:
     def __init__(self):
@@ -14,6 +23,7 @@ class CaseProcessingService:
                 return False
 
     # TODO: maternity trio tests (C, AM, F)
+    # TODO: F1 and F2 in the same case
     def check_swap_trio(self, lab_case: LabCase) -> list[int]:
 
         for subject in lab_case.subjects:
@@ -54,14 +64,36 @@ class CaseProcessingService:
                     child_x_alledged_father_count += 1
 
 
-        return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]
-
-    def set_case_subtype(self) -> None:
-        # SWAP, MUTATION, RECOGNITION, EXCLUSION
-        pass
+        return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
     
     def check_case_amelogenin_swap(self, lab_case: LabCase) -> bool:
         if any(self.check_subject_amelogenin_swap(subject) for subject in lab_case.subjects):
             return True
         else:
             return False
+
+    def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:  # SWAP, MUTATION, RECOGNITION, EXCLUSION
+        # what if there are more than just one type? maybe return a list and append
+        if lab_case.type_of_case == LabCaseType.duo or lab_case.type_of_case == LabCaseType.complex:         
+            if self.check_case_amelogenin_swap(lab_case) == True:
+                return LabCaseSubType.swap 
+            else:
+                return LabCaseSubType.ready
+        
+        if lab_case.type_of_case == LabCaseType.trio:
+            if self.check_case_amelogenin_swap(lab_case) == True:
+                return LabCaseSubType.swap 
+            
+            vector = self.check_swap_trio(lab_case)
+
+            if vector[0] < 3 or vector[1] > 3:
+                return LabCaseSubType.swap
+            if 0 < vector[1] <= 3:
+                return LabCaseSubType.mutation_mother
+            if 0 < vector[2] <= 3:
+                return LabCaseSubType.mutation_father
+
+            if vector[2] > 3:
+                return LabCaseSubType.exclusion
+            if vector[2] == 0:
+                return LabCaseSubType.ready
