@@ -1,27 +1,13 @@
 TODO
 
-check_swap
+set_case_subtype
+temporary add cases to "DB" in order to generate outputs
 calculate_locus
 
-trio
-duo
-complexo
+no_data for locus x
+generate one genetic profile using two or more kits
 
-criar exemplos de diferentes .csvs (duo, trio, kits com genótipos iguais, kits com genótipos diferentes)
-gerador de perfil genético com base em dois kits
-enum de SubjectType
-inclusão de LabCases e Subjects no DB. Se tem todos os genótipos, permitir proceder com cálculos.
-testes para as regex
+regex testing
+imrpove regex (_A, _B, ..._)
 
-x ler do(s) csv(s)
-"cadastrar"
-para cada caso, filtrar M e SP
-construir genótipo único com todos os kits (.csv)
-para somente M e depois somente F
-para cada loco do genótipo, ir armazenando o número de alelos e contando
-dividir pelo total
-retornar em tabela
-
-x ler do(s) csv(s)
-"cadastrar"
-para cada caso, calcular a estatística
+generate allele frequency database for the lab
