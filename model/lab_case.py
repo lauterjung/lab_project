@@ -17,10 +17,9 @@ class LabCase:
     def __init__(self,  name: str):
         self.name = name
         self.subjects = []
-        self.type_of_case = self.__set_type_of_case() # needs testing
 
-    def __set_type_of_case(self) -> LabCaseType:
-        
+    # TODO: needs to be moved to controller
+    def set_type_of_case(self) -> LabCaseType:
         individual_types = []
         for subject in self.subjects:
             individual_types.append(subject.subject_type.name)
