@@ -17,7 +17,7 @@ class LabCaseController():
             self.db.update(case)
     
     def import_allele_table(self, case: LabCase, file: str) -> None:
-        
+        # TODO: case needs to be defined from regex pattern directly from file
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')
             lines = []

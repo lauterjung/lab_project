@@ -12,12 +12,14 @@ class LabCase:
     juridic_cases: list[str]
     card_numbers: list[str]
     subjects: list[Subject]
-    
+    type_of_case: LabCaseType
+
     def __init__(self,  name: str):
         self.name = name
         self.subjects = []
+        self.type_of_case = self.__set_type_of_case() # needs testing
 
-    def type_of_case(self) -> LabCaseType:
+    def __set_type_of_case(self) -> LabCaseType:
         
         individual_types = []
         for subject in self.subjects:

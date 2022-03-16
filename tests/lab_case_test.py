@@ -34,7 +34,12 @@ class TypeOfCase(unittest.TestCase):
         lab_case_COMPLEX = LabCase(case_name)
         lab_case_COMPLEX.subjects = [mother, children, uncle]
         
-        self.assertEquals(lab_case_TRIO.type_of_case(), LabCaseType.trio)
-        self.assertEquals(lab_case_DUO_AF.type_of_case(), LabCaseType.duo)
-        self.assertEquals(lab_case_DUO_AM.type_of_case(), LabCaseType.duo)
-        self.assertEquals(lab_case_COMPLEX.type_of_case(), LabCaseType.complex)
+        lab_case_TRIO.__set_type_of_case()
+        lab_case_DUO_AF.__set_type_of_case()
+        lab_case_DUO_AM.__set_type_of_case()
+        lab_case_COMPLEX.__set_type_of_case()
+
+        self.assertEquals(lab_case_TRIO.type_of_case, LabCaseType.trio)
+        self.assertEquals(lab_case_DUO_AF.type_of_case, LabCaseType.duo)
+        self.assertEquals(lab_case_DUO_AM.type_of_case, LabCaseType.duo)
+        self.assertEquals(lab_case_COMPLEX.type_of_case, LabCaseType.complex)

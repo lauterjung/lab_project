@@ -2,6 +2,7 @@ from enum import Enum
 from model.lab_case import LabCase, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
 
+# TODO: needs to be moved to lab_case
 class LabCaseSubType(Enum):
     ready = 1
     exclusion = 2
@@ -74,13 +75,13 @@ class CaseProcessingService:
 
     def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:  # SWAP, MUTATION, RECOGNITION, EXCLUSION
         # what if there are more than just one type? maybe return a list and append
-        if lab_case.type_of_case == LabCaseType.duo or lab_case.type_of_case == LabCaseType.complex:         
+        if lab_case.__set_type_of_case == LabCaseType.duo or lab_case.__set_type_of_case == LabCaseType.complex:         
             if self.check_case_amelogenin_swap(lab_case) == True:
                 return LabCaseSubType.swap 
             else:
                 return LabCaseSubType.ready
         
-        if lab_case.type_of_case == LabCaseType.trio:
+        if lab_case.__set_type_of_case == LabCaseType.trio:
             if self.check_case_amelogenin_swap(lab_case) == True:
                 return LabCaseSubType.swap 
             
