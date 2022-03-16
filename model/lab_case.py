@@ -14,6 +14,8 @@ class LabCase:
     subjects: list[Subject]
     type_of_case: LabCaseType
 
+    # store details in case variables
+    
     def __init__(self,  name: str):
         self.name = name
         self.subjects = []

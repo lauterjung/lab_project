@@ -77,7 +77,7 @@ class CaseProcessingService:
         # what if there are more than just one type? maybe return a list and append
         if lab_case.__set_type_of_case == LabCaseType.duo or lab_case.__set_type_of_case == LabCaseType.complex:         
             if self.check_case_amelogenin_swap(lab_case) == True:
-                return LabCaseSubType.swap 
+                return LabCaseSubType.swap
             else:
                 return LabCaseSubType.ready
         
