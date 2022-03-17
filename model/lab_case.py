@@ -1,6 +1,7 @@
 from enum import Enum
 
 from model.subject import Subject, SubjectType
+from model.genotype import Genotype
 
 class LabCaseType(Enum):
     invalid = 1
@@ -14,10 +15,13 @@ class LabCase:
     subjects: list[Subject]
     type_of_case: LabCaseType
 
-    # store details in case variables
-    
+    details_mutation: list[tuple(Genotype.locus, Subject, Subject)]
+    details_amelogenin_swap: list[Subject.codification]
+
+    details_locus_paternity_index: list[tuple(Genotype.locus, float)]
+    combined_paternity_index: float
+    number_of_inconsistencies: int
+
     def __init__(self,  name: str):
         self.name = name
         self.subjects = []
-
-    # TODO: needs to be moved to controller

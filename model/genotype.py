@@ -3,6 +3,7 @@ from typing import Final
 
 class Genotype:
     exclude_from_calculations: bool
+    linked_loci: bool
 
     def __init__(self, kit: str, locus: str, allele_1: str, allele_2: str):
         self.kit = kit
@@ -18,3 +19,5 @@ class Genotype:
             return True
         else:
             return False
+
+    # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations)
