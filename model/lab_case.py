@@ -15,8 +15,8 @@ class LabCase:
     subjects: list[Subject]
     type_of_case: LabCaseType
 
-    details_mutation: list[tuple(Genotype.locus, Subject, Subject)]
-    details_amelogenin_swap: list[Subject.codification]
+    details_mutation: list[tuple(Genotype.locus, Subject, Subject)] # Subject or self.Subject?
+    details_amelogenin_swap: list[tuple(bool, Subject)]
 
     details_locus_paternity_index: list[tuple(Genotype.locus, float)]
     combined_paternity_index: float

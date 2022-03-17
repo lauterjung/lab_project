@@ -41,15 +41,16 @@ if len(csv_files) != 1:
 
 csv_file = csv_files[0]
 
-# walk in main folder searching for all lab cases .csvs for respective kit
-# register in DB
-# read .csv containing all cases
+# ask for main folder
+# ask for kit
+# walk in main folder searching for all lab cases directories
+# get directory names
+# from directory names, register in DB
+# read case .csv from respective kit
 # verify case type
 # verify swaps and case subtype
 
 # TODO: calculations
 # generate summary table (Case, Type, Log)
 # TODO: better log (which locus has inconsistencies?)
-# TODO: if exclusion, generate request to secretary (.txt) and print
-
-# TODO: split .csv for each case, or generate .csv from DB
+# TODO: if exclusion, generate repetition request to secretary (.txt) and print

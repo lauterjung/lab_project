@@ -1,5 +1,7 @@
 TODO
 
+test new amelogenin_swap methods
+
 set_case_subtype
 temporary add cases to "DB" in order to generate outputs
 calculate_locus

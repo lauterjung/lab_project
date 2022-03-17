@@ -19,9 +19,9 @@ class CaseProcessingService:
         for genotype in subject.genetic_profile:
             if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and subject.gender == Gender.female) or \
                (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "X" and subject.gender == Gender.male):
-                return True
+                subject.amelogenin_swap = True
             else:
-                return False
+                subject.amelogenin_swap = False
 
     # TODO: maternity trio tests (C, AM, F)
     # TODO: F1 and F2 in the same case
@@ -64,17 +64,17 @@ class CaseProcessingService:
             elif len(set(gc) & set(gf)) == 0:
                     child_x_alledged_father_count += 1
 
-
         return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
     
-    def check_case_amelogenin_swap(self, lab_case: LabCase) -> bool:
-        if any(self.check_subject_amelogenin_swap(subject) for subject in lab_case.subjects):
-            return True
+    def check_case_amelogenin_swap(self, lab_case: LabCase) -> tuple(bool, Subject):
+        if any(subject.amelogenin_swap for subject in lab_case.subjects):
+            subject = subject
+            lab_case.details_amelogenin_swap.append((True, subject))
         else:
-            return False
+            lab_case.details_amelogenin_swap.append((False, None))
 
     def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:  # SWAP, MUTATION, RECOGNITION, EXCLUSION
-        # what if there are more than just one type? maybe return a list and append
+        # what if there are more than just one type? maybe append and return a list
         if lab_case.__set_type_of_case == LabCaseType.duo or lab_case.__set_type_of_case == LabCaseType.complex:         
             if self.check_case_amelogenin_swap(lab_case) == True:
                 return LabCaseSubType.swap
