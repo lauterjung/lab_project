@@ -1,6 +1,6 @@
 import unittest
 
-from model.lab_case import LabCase
+from model.lab_case import LabCase, LabCaseType
 from model.subject import Subject
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController, LabCaseController
@@ -68,6 +68,46 @@ class LabCaseControllerTest(unittest.TestCase):
         self.assertEquals(fetched_subject.name, "UD000000F_VE")
         self.assertEquals(len(fetched_subject.genetic_profile), 4)
         self.assertEquals(fetched_subject.genetic_profile[0].kit, "VE")
+    
+    def test_get_case_type(self):
+        case_name = "UD990000"
+        
+        mother_name = case_name+"M"
+        children_name = case_name+"F"
+        alledged_father_name = case_name+"SP"
+        alledged_mother_name = case_name+"SM"
+        uncle_name = case_name+"STP1"
+
+        mother = Subject(mother_name, [])
+        alledged_mother = Subject(alledged_mother_name, [])
+        children = Subject(children_name, [])
+        alledged_father = Subject(alledged_father_name, [])
+        uncle = Subject(uncle_name, [])
+        
+        lab_case_TRIO = LabCase(case_name)
+        lab_case_TRIO.subjects = [mother, children, alledged_father]
+        
+        lab_case_DUO_AF = LabCase(case_name)
+        lab_case_DUO_AF.subjects = [children, alledged_father]
+        
+        lab_case_DUO_AM = LabCase(case_name)
+        lab_case_DUO_AM.subjects = [alledged_mother, children]
+        
+        lab_case_COMPLEX = LabCase(case_name)
+        lab_case_COMPLEX.subjects = [mother, children, uncle]
+        
+        database = LabCaseDBMock()
+        controller = LabCaseController(database)
+
+        lab_case_TRIO.type_of_case = controller.set_type_of_case(lab_case_TRIO)
+        lab_case_DUO_AF.type_of_case = controller.set_type_of_case(lab_case_DUO_AF)
+        lab_case_DUO_AM.type_of_case = controller.set_type_of_case(lab_case_DUO_AM)
+        lab_case_COMPLEX.type_of_case = controller.set_type_of_case(lab_case_COMPLEX)
+
+        self.assertEquals(lab_case_TRIO.type_of_case, LabCaseType.trio)
+        self.assertEquals(lab_case_DUO_AF.type_of_case, LabCaseType.duo)
+        self.assertEquals(lab_case_DUO_AM.type_of_case, LabCaseType.duo)
+        self.assertEquals(lab_case_COMPLEX.type_of_case, LabCaseType.complex)
         
 class LabCaseDBMock(LabCaseDB):
     lab_cases: list[LabCase]
