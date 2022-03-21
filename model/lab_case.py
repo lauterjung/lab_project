@@ -15,10 +15,12 @@ class LabCase:
     subjects: list[Subject]
     type_of_case: LabCaseType
 
-    details_mutation: list[tuple(Genotype.locus, Subject, Subject)] # Subject or self.Subject?
-    details_amelogenin_swap: list[tuple(bool, Subject)]
+    details_mutation: list[tuple] # Subject or self.Subject?
+    # AttributeError: type object 'Genotype' has no attribute 'locus'
+    details_amelogenin_swap: list[tuple]
 
-    details_locus_paternity_index: list[tuple(Genotype.locus, float)]
+    details_locus_paternity_index: list[tuple]
+    # AttributeError: type object 'Genotype' has no attribute 'locus'
     combined_paternity_index: float
     number_of_inconsistencies: int
 

@@ -117,6 +117,7 @@ class LabCaseDBMock(LabCaseDB):
     
     def save(self, case: LabCase):
         self.lab_cases.append(case)
+        # TODO: if exists
     
     def fetch(self, name: str) -> LabCase:
         for saved_case in self.lab_cases:

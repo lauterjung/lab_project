@@ -66,7 +66,7 @@ class CaseProcessingService:
 
         return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
     
-    def check_case_amelogenin_swap(self, lab_case: LabCase) -> tuple(bool, Subject):
+    def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple]:
         if any(subject.amelogenin_swap for subject in lab_case.subjects):
             subject = subject
             lab_case.details_amelogenin_swap.append((True, subject))
