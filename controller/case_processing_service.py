@@ -24,7 +24,7 @@ class CaseProcessingService:
                 subject.amelogenin_swap = False
 
     # TODO: maternity trio tests (C, AM, F)
-    # TODO: F1 and F2 in the same case
+    # TODO: F1 and F2 in the same case. M F1 F2 and SP type is trio or complex?
     def check_swap_trio(self, lab_case: LabCase) -> list[int]:
 
         for subject in lab_case.subjects:
@@ -39,6 +39,7 @@ class CaseProcessingService:
             # elif subject.subject_type.name == SubjectType.alledged_mother.name:
             #     alledged_mother = subject
 
+        # instead of count variables, object attribute as list, then list.append(genetic_profile.locus). Return len(list), ...
         child_x_alledged_father_count = 0
         mother_x_alledged_father_count = 0
         mother_x_child_count = 0
@@ -66,7 +67,7 @@ class CaseProcessingService:
 
         return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
     
-    def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple]:
+    def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple[bool, Subject]]:
         for subject in lab_case.subjects:
             self.check_subject_amelogenin_swap(subject)
             if subject.amelogenin_swap == True:
