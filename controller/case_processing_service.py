@@ -58,7 +58,7 @@ class CaseProcessingService:
             if len(set(gc) & set(gm)) == 0:  
                 mother_x_child_count += 1
 
-            if len(set(gc) & set(gm)) == 1:
+            if len(set(gc) & set(gm)) == 1 and gc[0] != gc[1]: #len(set(gc) - set(gm)) != 0:
                 if list(set(gc) - set(gm))[0] not in gf:
                     child_x_alledged_father_count += 1
             elif len(set(gc) & set(gf)) == 0:
@@ -67,11 +67,10 @@ class CaseProcessingService:
         return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
     
     def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple]:
-        if any(subject.amelogenin_swap for subject in lab_case.subjects):
-            subject = subject
-            lab_case.details_amelogenin_swap.append((True, subject))
-        else:
-            lab_case.details_amelogenin_swap.append((False, None))
+        for subject in lab_case.subjects:
+            self.check_subject_amelogenin_swap(subject)
+            if subject.amelogenin_swap == True:
+                lab_case.details_amelogenin_swap.append((True, subject))
 
     def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:  # SWAP, MUTATION, RECOGNITION, EXCLUSION
         # what if there are more than just one type? maybe append and return a list

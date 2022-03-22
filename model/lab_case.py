@@ -27,3 +27,4 @@ class LabCase:
     def __init__(self,  name: str):
         self.name = name
         self.subjects = []
+        self.details_amelogenin_swap = []
