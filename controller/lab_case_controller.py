@@ -54,13 +54,19 @@ class LabCaseController():
             return LabCaseType.invalid
         
         if len(individual_types) == 2:
-            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]) or \
-               all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
+            if all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
                    return LabCaseType.duo
+
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]):
+                   return LabCaseType.maternity_duo
         
-        if len(individual_types) == 3:
-            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]) or \
-               all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
                     return LabCaseType.trio
+
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]):
+                    return LabCaseType.maternity_trio
         
         return LabCaseType.complex

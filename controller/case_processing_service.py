@@ -1,15 +1,9 @@
 from enum import Enum
-from model.lab_case import LabCase, LabCaseType
+from controller.lab_case_controller import LabCaseController
+from model.lab_case import LabCase, LabCaseSubType, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
 
 # TODO: needs to be moved to lab_case
-class LabCaseSubType(Enum):
-    ready = 1
-    exclusion = 2
-    swap = 3
-    mutation_mother = 4
-    mutation_father = 5
-    other = 99 # just in case to help debugging
 
 class CaseProcessingService:
     def __init__(self):
@@ -39,10 +33,10 @@ class CaseProcessingService:
             # elif subject.subject_type.name == SubjectType.alledged_mother.name:
             #     alledged_mother = subject
 
-        # instead of count variables, object attribute as list, then list.append(genetic_profile.locus). Return len(list), ...
-        child_x_alledged_father_count = 0
-        mother_x_alledged_father_count = 0
-        mother_x_child_count = 0
+        lab_case.child_x_alledged_father = []
+        lab_case.mother_x_alledged_father = []
+        lab_case.mother_x_child = []
+
         mother_genotype = mother.get_genetic_profile_as_dictionary()
         alledged_father_genotype = alledged_father.get_genetic_profile_as_dictionary()        
 
@@ -55,17 +49,17 @@ class CaseProcessingService:
             gf = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
            
             if len(set(gf) & set(gm)) == 0:      
-                mother_x_alledged_father_count += 1
+                lab_case.mother_x_alledged_father.append(genotype.locus)
             if len(set(gc) & set(gm)) == 0:  
-                mother_x_child_count += 1
+                lab_case.mother_x_child.append(genotype.locus)
 
             if len(set(gc) & set(gm)) == 1 and gc[0] != gc[1]: #len(set(gc) - set(gm)) != 0:
                 if list(set(gc) - set(gm))[0] not in gf:
-                    child_x_alledged_father_count += 1
+                    lab_case.child_x_alledged_father.append(genotype.locus)
             elif len(set(gc) & set(gf)) == 0:
-                    child_x_alledged_father_count += 1
+                   lab_case.child_x_alledged_father.append(genotype.locus)
 
-        return [mother_x_alledged_father_count, mother_x_child_count, child_x_alledged_father_count]    
+        return [len(lab_case.mother_x_alledged_father), len(lab_case.mother_x_child), len(lab_case.child_x_alledged_father)]    
     
     def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple[bool, Subject]]:
         for subject in lab_case.subjects:
@@ -73,27 +67,26 @@ class CaseProcessingService:
             if subject.amelogenin_swap == True:
                 lab_case.details_amelogenin_swap.append((True, subject))
 
-    def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:  # SWAP, MUTATION, RECOGNITION, EXCLUSION
-        # what if there are more than just one type? maybe append and return a list
-        if lab_case.__set_type_of_case == LabCaseType.duo or lab_case.__set_type_of_case == LabCaseType.complex:         
-            if self.check_case_amelogenin_swap(lab_case) == True:
+    def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:
+        controller = LabCaseController()
+        if controller.set_type_of_case(lab_case) == LabCaseType.duo or controller.set_type_of_case(lab_case) == LabCaseType.complex:         
+            if len(lab_case.details_amelogenin_swap) > 0:
                 return LabCaseSubType.swap
             else:
                 return LabCaseSubType.ready
         
-        if lab_case.__set_type_of_case == LabCaseType.trio:
-            if self.check_case_amelogenin_swap(lab_case) == True:
+        if controller.set_type_of_case(lab_case) == LabCaseType.trio:
+            if len(lab_case.details_amelogenin_swap) > 0:
                 return LabCaseSubType.swap 
             
             vector = self.check_swap_trio(lab_case)
 
-            if vector[0] < 3 or vector[1] > 3:
+            if vector[0] <= 3 or vector[1] > 3:
                 return LabCaseSubType.swap
             if 0 < vector[1] <= 3:
                 return LabCaseSubType.mutation_mother
             if 0 < vector[2] <= 3:
                 return LabCaseSubType.mutation_father
-
             if vector[2] > 3:
                 return LabCaseSubType.exclusion
             if vector[2] == 0:

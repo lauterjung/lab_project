@@ -1,9 +1,9 @@
 TODO
 
-test new amelogenin_swap methods
+update all tests
 
 set_case_subtype
-temporary add cases to "DB" in order to generate outputs
+
 calculate_locus
 
 no_data for locus x

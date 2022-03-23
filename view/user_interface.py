@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+from unittest import result
 
 from controller.case_processing_service import CaseProcessingService
 from controller.lab_case_controller import LabCaseController
@@ -41,15 +42,30 @@ for folder_name in case_folders:
     case.type_of_case = controller.set_type_of_case(case)
 
     case_processing.check_case_amelogenin_swap(case)
+    
     # abc = case_processing.set_case_subtype(case)
-    # case_processing.check_swap_trio(case)
+    # case.subtype_of_case = case_processing.set_case_subtype(case)
+    
     if case.type_of_case == LabCaseType.trio:
         vector = case_processing.check_swap_trio(case)
+        results_swap = ""
+        results_mutation_C_AF = ""
+        results_mutation_M_C = ""
+
+        if len(case.mother_x_alledged_father) <= 3 or len(case.mother_x_child) > 3:
+            results_swap = "TROCA"
+        if 0 < len(case.mother_x_child) <= 3:
+            results_mutation_M_C = "Mutação entre M e F no(s) loco(s): " + " ".join(case.mother_x_child) + "."
+        if 0 < len(case.child_x_alledged_father) <= 3:
+            results_mutation_C_AF = "Mutação entre F e SP no(s) loco(s): " + ", ".join(case.child_x_alledged_father) + "."
+        inconsistency_list = " ".join([results_swap, results_mutation_M_C, results_mutation_C_AF]).strip()
     else:
         vector = []
-        
-    result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector))
-
+        inconsistency_list = []
+    
+    # result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
+    result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
+    result_table
 
 ### ask for main folder
 ### ask for kit
@@ -64,8 +80,9 @@ for folder_name in case_folders:
 # TODO: better log (which locus has inconsistencies?)
 # TODO: if exclusion, generate repetition request to secretary (.txt) and print
 
-for case in db.lab_cases:
-    for subject in case.subjects:
-        print(subject.name)
-        for genotype in subject.genetic_profile:
-            print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)
+
+# for case in db.lab_cases:
+#     for subject in case.subjects:
+#         print(subject.name)
+#         for genotype in subject.genetic_profile:
+#             print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)

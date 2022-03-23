@@ -8,16 +8,29 @@ class LabCaseType(Enum):
     invalid = 1
     duo = 2
     trio = 3
-    # maternity = 4
-    complex = 4
+    maternity_duo = 4
+    maternity_trio = 5
+    complex = 6
+
+class LabCaseSubType(Enum):
+    ready = 1
+    exclusion = 2
+    swap = 3
+    mutation_mother = 4
+    mutation_father = 5
+    other = 99 # just in case to help debugging
 
 class LabCase:
     juridic_cases: list[str]
     card_numbers: list[str]
     subjects: list[Subject]
     type_of_case: LabCaseType
+    subtype_of_case: LabCaseSubType
 
-    details_mutation: list[tuple[str, Subject, Subject]]
+    child_x_alledged_father: list[str]
+    mother_x_alledged_father: list[str]
+    mother_x_child: list[str]
+
     details_amelogenin_swap: list[tuple[bool, Subject]] # (True, Subject)
 
     locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
@@ -28,3 +41,6 @@ class LabCase:
         self.name = name
         self.subjects = []
         self.details_amelogenin_swap = []
+        self.child_x_alledged_father = []
+        self.mother_x_alledged_father = []
+        self.mother_x_child = []
