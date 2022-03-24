@@ -34,9 +34,9 @@ class LabCase:
 
     details_amelogenin_swap: list[tuple[bool, Subject]] # (True, Subject)
 
-    locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
-    combined_paternity_index: float
-    number_of_inconsistencies: int
+    # locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
+    # combined_paternity_index: float
+    # number_of_inconsistencies: int
 
     def __init__(self,  name: str):
         self.name = name

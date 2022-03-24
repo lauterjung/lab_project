@@ -1,6 +1,16 @@
 TODO
 
-update all tests
+check_swap_trio: create list to store results and set only at the end 
+lab case: instead of 3 attributes, a single list with subject1, subject2 and list of locus
+instead of check_swap_trio, two methods that take 2 or  3individuals and return/set inconsistency locus
+change gc gf and gm
+
+check_case_amelogenin_swap: delete details_amelogenin_swap and create LabCase mthod that returns what is inside of it
+set_type_of_case -> define_/check_ ...
+
+controller: register 
+	create populate_lab_case
+service: calculations
 
 return vs. set .attribute
 

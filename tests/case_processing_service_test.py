@@ -54,12 +54,12 @@ class CaseProcessingServiceTest(unittest.TestCase):
         self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_004), [0, 0, 4])
         self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_111), [1, 1, 1])
 
-    def test_set_case_subtype(self):
-        case_processing_service = CaseProcessingService()
+    # def test_set_case_subtype(self):
+    #     case_processing_service = CaseProcessingService()
 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.ready) 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.exclusion) 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.swap) 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.mutation_mother) 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.mutation_father) 
-        self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.other) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.ready) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.exclusion) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.swap) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.mutation_mother) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.mutation_father) 
+    #     self.assertEqual(case_processing_service.set_case_subtype(), LabCaseSubType.other) 
