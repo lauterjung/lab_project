@@ -30,6 +30,7 @@ class Subject():
     codification: str
     subject_type: SubjectType
     gender: Gender
+    amelogenin_swap: bool
     
     def __init__(self, name: str, genetic_profile: list[Genotype]):
         self.name = name

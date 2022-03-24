@@ -2,8 +2,8 @@ import csv
 import re
 
 from model.genotype import Genotype
-from model.lab_case import LabCase
-from model.subject import Subject
+from model.lab_case import LabCase, LabCaseType
+from model.subject import Subject, SubjectType
 from controller.database import LabCaseDB
 
 class LabCaseController():
@@ -17,7 +17,7 @@ class LabCaseController():
             self.db.update(case)
     
     def import_allele_table(self, case: LabCase, file: str) -> None:
-        
+        # TODO: case needs to be defined from regex pattern directly from file
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')
             lines = []
@@ -44,4 +44,29 @@ class LabCaseController():
             if subject.name == name:
                 return subject
         return None
-            
+    
+    def set_type_of_case(self, case) -> LabCaseType:
+        individual_types = []
+        for subject in case.subjects:
+            individual_types.append(subject.subject_type.name)
+                                                            
+        if SubjectType.child.name not in individual_types:
+            return LabCaseType.invalid
+        
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
+                   return LabCaseType.duo
+
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]):
+                   return LabCaseType.maternity_duo
+        
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
+                    return LabCaseType.trio
+
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]):
+                    return LabCaseType.maternity_trio
+        
+        return LabCaseType.complex

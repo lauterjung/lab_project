@@ -1,3 +1,6 @@
+from typing import Final
+
+
 class Genotype:
     exclude_from_calculations: bool
 
@@ -9,9 +12,11 @@ class Genotype:
         self.exclude_from_calculations = self.__set_exclude_from_calc()
     
     def __set_exclude_from_calc(self) -> bool:
-        EXCLUDE_FROM_CALC = ["Amel", "Yindel", "DYS391", "DYS576", "DYS570"]
+        EXCLUDE_FROM_CALC: Final[str] = ["Amel", "Yindel", "DYS391", "DYS576", "DYS570"]
         
         if self.locus in EXCLUDE_FROM_CALC:
             return True
         else:
             return False
+
+    # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
