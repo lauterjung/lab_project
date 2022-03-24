@@ -14,10 +14,11 @@ class LabCaseType(Enum):
 
 class LabCaseSubType(Enum):
     ready = 1
-    exclusion = 2
-    swap = 3
-    mutation_mother = 4
-    mutation_father = 5
+    inclusion = 2
+    exclusion = 3
+    swap = 4
+    mutation_mother = 5
+    mutation_father = 6
     other = 99 # just in case to help debugging
 
 class LabCase:

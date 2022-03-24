@@ -3,13 +3,11 @@ from controller.lab_case_controller import LabCaseController
 from model.lab_case import LabCase, LabCaseSubType, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
 
-# TODO: needs to be moved to lab_case
-
 class CaseProcessingService:
     def __init__(self):
         pass
     
-    def check_subject_amelogenin_swap(self, subject: Subject) -> bool:
+    def check_subject_amelogenin_swap(self, subject: Subject) -> None:
         for genotype in subject.genetic_profile:
             if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and subject.gender == Gender.female) or \
                (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "X" and subject.gender == Gender.male):
@@ -19,7 +17,9 @@ class CaseProcessingService:
 
     # TODO: maternity trio tests (C, AM, F)
     # TODO: F1 and F2 in the same case. M F1 F2 and SP type is trio or complex?
-    def check_swap_trio(self, lab_case: LabCase) -> list[int]:
+    # TODO: change method name
+    # TODO: this method sets and returns. Change it to only set, and create a return method
+    def check_swap_trio(self, lab_case: LabCase) -> list[int]: 
 
         for subject in lab_case.subjects:
             if subject.subject_type.name == SubjectType.child.name:
@@ -61,33 +61,33 @@ class CaseProcessingService:
 
         return [len(lab_case.mother_x_alledged_father), len(lab_case.mother_x_child), len(lab_case.child_x_alledged_father)]    
     
-    def check_case_amelogenin_swap(self, lab_case: LabCase) -> list[tuple[bool, Subject]]:
+    def check_case_amelogenin_swap(self, lab_case: LabCase) -> None:
         for subject in lab_case.subjects:
             self.check_subject_amelogenin_swap(subject)
             if subject.amelogenin_swap == True:
-                lab_case.details_amelogenin_swap.append((True, subject))
+                lab_case.details_amelogenin_swap.append(subject)
 
-    def set_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:
+    def set_case_subtype(self, lab_case: LabCase) -> None:
         controller = LabCaseController()
         if controller.set_type_of_case(lab_case) == LabCaseType.duo or controller.set_type_of_case(lab_case) == LabCaseType.complex:         
             if len(lab_case.details_amelogenin_swap) > 0:
-                return LabCaseSubType.swap
+                lab_case.subtype_of_case = LabCaseSubType.swap
             else:
-                return LabCaseSubType.ready
+                lab_case.subtype_of_case = LabCaseSubType.ready
         
         if controller.set_type_of_case(lab_case) == LabCaseType.trio:
             if len(lab_case.details_amelogenin_swap) > 0:
-                return LabCaseSubType.swap 
+                lab_case.subtype_of_case = LabCaseSubType.swap 
             
             vector = self.check_swap_trio(lab_case)
 
             if vector[0] <= 3 or vector[1] > 3:
-                return LabCaseSubType.swap
+                lab_case.subtype_of_case = LabCaseSubType.swap
             if 0 < vector[1] <= 3:
-                return LabCaseSubType.mutation_mother
+                lab_case.subtype_of_case = LabCaseSubType.mutation_mother
             if 0 < vector[2] <= 3:
-                return LabCaseSubType.mutation_father
+                lab_case.subtype_of_case = LabCaseSubType.mutation_father
             if vector[2] > 3:
-                return LabCaseSubType.exclusion
+                lab_case.subtype_of_case = LabCaseSubType.exclusion
             if vector[2] == 0:
-                return LabCaseSubType.ready
+                lab_case.subtype_of_case = LabCaseSubType.ready

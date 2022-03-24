@@ -93,6 +93,7 @@ class TestSetup():
 
     swapped_mother = Subject(swapped_mother_name, [])
     swapped_alledged_father = Subject(swapped_alledged_father_name, [])
+    swapped_alledged_father_duo = Subject(swapped_alledged_father_name, [])
     swapped_alledged_mother = Subject(swapped_alledged_mother_name, [])
     swapped_father = Subject(swapped_father_name, [])
     swapped_auxiliary_mother_1 = Subject(swapped_auxiliary_mother_1_name, [])
@@ -149,6 +150,7 @@ class TestSetup():
 
     swapped_mother.genetic_profile.append(male_genotype)
     swapped_alledged_father.genetic_profile.append(female_genotype)
+    swapped_alledged_father_duo.genetic_profile.append(female_genotype)
     swapped_alledged_mother.genetic_profile.append(male_genotype)
     swapped_father.genetic_profile.append(female_genotype)
     swapped_auxiliary_mother_1.genetic_profile.append(male_genotype)
@@ -168,11 +170,13 @@ class TestSetup():
     correct_case_trio.subjects.extend([mother, child, alledged_father])
     swapped_case_trio = LabCase(case_name)
     swapped_case_trio.subjects.extend([swapped_mother, child, alledged_father])
+    swapped_case_trio_2 = LabCase(case_name)
+    swapped_case_trio_2.subjects.extend([swapped_mother, child, swapped_alledged_father])
     
     correct_case_duo = LabCase(case_name)
     correct_case_duo.subjects.extend([child, alledged_father])
     swapped_case_duo = LabCase(case_name)
-    swapped_case_duo.subjects.extend([child, swapped_alledged_father])
+    swapped_case_duo.subjects.extend([child, swapped_alledged_father_duo])
 
     no_gender_case_complex = LabCase(case_name)
     no_gender_case_complex.subjects.extend([child, paternal_uncle_1, maternal_uncle_1, another_1])

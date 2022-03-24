@@ -13,20 +13,34 @@ class CaseProcessingServiceTest(unittest.TestCase):
     def test_check_subject_amelogenin_swap(self):
         case_processing_service = CaseProcessingService()
 
-        self.assertTrue(case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_mother))
-        self.assertTrue(case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_alledged_father))
-        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.mother))
-        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.alledged_father))
-        self.assertFalse(case_processing_service.check_subject_amelogenin_swap(self.test_setup.child))
+        case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_mother)
+        case_processing_service.check_subject_amelogenin_swap(self.test_setup.swapped_alledged_father)
+        case_processing_service.check_subject_amelogenin_swap(self.test_setup.mother)
+        case_processing_service.check_subject_amelogenin_swap(self.test_setup.alledged_father)
+        case_processing_service.check_subject_amelogenin_swap(self.test_setup.child)
+        
+        self.assertTrue(self.test_setup.swapped_mother.amelogenin_swap)
+        self.assertTrue(self.test_setup.swapped_alledged_father.amelogenin_swap)
+        self.assertFalse(self.test_setup.mother.amelogenin_swap)
+        self.assertFalse(self.test_setup.alledged_father.amelogenin_swap)
+        self.assertFalse(self.test_setup.child.amelogenin_swap)
 
     def test_check_case_amelogenin_swap(self):
         case_processing_service = CaseProcessingService()
 
-        self.assertTrue(case_processing_service.check_case_amelogenin_swap(self.test_setup.swapped_case_trio))
-        self.assertFalse(case_processing_service.check_case_amelogenin_swap(self.test_setup.correct_case_trio))
-        self.assertTrue(case_processing_service.check_case_amelogenin_swap(self.test_setup.swapped_case_duo))
-        self.assertFalse(case_processing_service.check_case_amelogenin_swap(self.test_setup.correct_case_duo))
-        self.assertFalse(case_processing_service.check_case_amelogenin_swap(self.test_setup.no_gender_case_complex))
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.swapped_case_trio)
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.swapped_case_trio_2)
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.correct_case_trio)
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.swapped_case_duo)
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.correct_case_duo)
+        case_processing_service.check_case_amelogenin_swap(self.test_setup.no_gender_case_complex)
+
+        self.assertEquals(self.test_setup.swapped_case_trio.details_amelogenin_swap, [self.test_setup.swapped_mother])
+        self.assertEquals(self.test_setup.swapped_case_trio_2.details_amelogenin_swap, [self.test_setup.swapped_mother, self.test_setup.swapped_alledged_father])
+        self.assertEquals(self.test_setup.correct_case_trio.details_amelogenin_swap, [])
+        self.assertEquals(self.test_setup.swapped_case_duo.details_amelogenin_swap, [self.test_setup.swapped_alledged_father_duo])
+        self.assertEquals(self.test_setup.correct_case_duo.details_amelogenin_swap, [])
+        self.assertEquals(self.test_setup.no_gender_case_complex.details_amelogenin_swap, [])
     
     def test_check_swap_trio(self):
         case_processing_service = CaseProcessingService()

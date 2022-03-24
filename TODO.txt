@@ -2,7 +2,7 @@ TODO
 
 update all tests
 
-set_case_subtype
+return vs. set .attribute
 
 calculate_locus
 
