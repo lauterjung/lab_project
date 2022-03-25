@@ -10,7 +10,7 @@ class LabCaseDB:
         pass
 
     def update(case: LabCase) -> None:
-        # dar update baseado em chave _id
+        # update based on id_key
         pass
 
 class LocusDB:

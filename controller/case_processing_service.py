@@ -1,4 +1,3 @@
-from enum import Enum
 from controller.lab_case_controller import LabCaseController
 from model.lab_case import LabCase, LabCaseSubType, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
@@ -44,19 +43,19 @@ class CaseProcessingService:
             if genotype.exclude_from_calculations:
                 continue
 
-            gc = [genotype.allele_1, genotype.allele_2]
-            gm = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
-            gf = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
+            child_alleles = [genotype.allele_1, genotype.allele_2]
+            mother_alleles = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
+            father_alleles = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
            
-            if len(set(gf) & set(gm)) == 0:      
+            if len(set(father_alleles) & set(mother_alleles)) == 0:      
                 lab_case.mother_x_alledged_father.append(genotype.locus)
-            if len(set(gc) & set(gm)) == 0:  
+            if len(set(child_alleles) & set(mother_alleles)) == 0:  
                 lab_case.mother_x_child.append(genotype.locus)
 
-            if len(set(gc) & set(gm)) == 1 and gc[0] != gc[1]: #len(set(gc) - set(gm)) != 0:
-                if list(set(gc) - set(gm))[0] not in gf:
+            if len(set(child_alleles) & set(mother_alleles)) == 1 and child_alleles[0] != child_alleles[1]: #len(set(child_alleles) - set(mother_alleles)) != 0:
+                if list(set(child_alleles) - set(mother_alleles))[0] not in father_alleles:
                     lab_case.child_x_alledged_father.append(genotype.locus)
-            elif len(set(gc) & set(gf)) == 0:
+            elif len(set(child_alleles) & set(father_alleles)) == 0:
                    lab_case.child_x_alledged_father.append(genotype.locus)
 
         return [len(lab_case.mother_x_alledged_father), len(lab_case.mother_x_child), len(lab_case.child_x_alledged_father)]    

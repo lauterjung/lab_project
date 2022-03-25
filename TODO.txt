@@ -3,9 +3,8 @@ TODO
 check_swap_trio: create list to store results and set only at the end 
 lab case: instead of 3 attributes, a single list with subject1, subject2 and list of locus
 instead of check_swap_trio, two methods that take 2 or  3individuals and return/set inconsistency locus
-change gc gf and gm
 
-check_case_amelogenin_swap: delete details_amelogenin_swap and create LabCase mthod that returns what is inside of it
+check_case_amelogenin_swap: delete details_amelogenin_swap and create LabCase method that returns what is inside of it
 set_type_of_case -> define_/check_ ...
 
 controller: register 
@@ -15,6 +14,12 @@ service: calculations
 return vs. set .attribute
 
 calculate_locus
+    # locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
+    # combined_paternity_index: float
+    # number_of_inconsistencies: int
+
+model/genotype.py
+# TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
 
 no_data for locus x
 generate one genetic profile using two or more kits

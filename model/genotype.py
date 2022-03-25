@@ -18,5 +18,3 @@ class Genotype:
             return True
         else:
             return False
-
-    # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool

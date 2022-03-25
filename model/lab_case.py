@@ -1,8 +1,6 @@
-from ast import Sub
 from enum import Enum
 
-from model.subject import Subject, SubjectType
-from model.genotype import Genotype
+from model.subject import Subject
 
 class LabCaseType(Enum):
     invalid = 1
@@ -19,7 +17,6 @@ class LabCaseSubType(Enum):
     swap = 4
     mutation_mother = 5
     mutation_father = 6
-    other = 99 # just in case to help debugging
 
 class LabCase:
     juridic_cases: list[str]
@@ -32,11 +29,7 @@ class LabCase:
     mother_x_alledged_father: list[str]
     mother_x_child: list[str]
 
-    details_amelogenin_swap: list[tuple[bool, Subject]] # (True, Subject)
-
-    # locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
-    # combined_paternity_index: float
-    # number_of_inconsistencies: int
+    details_amelogenin_swap: list[tuple[bool, Subject]]
 
     def __init__(self,  name: str):
         self.name = name

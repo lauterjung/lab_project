@@ -1,7 +1,6 @@
+from contextlib import redirect_stdout
 import os
 import re
-import sys
-from unittest import result
 
 from controller.case_processing_service import CaseProcessingService
 from controller.lab_case_controller import LabCaseController
@@ -16,7 +15,8 @@ analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas
 kit = input("Qual kit está sendo usado?").upper()
 case_folders = next(os.walk(analyze_folder+'.'))[1]
 
-result_table = []
+result_table_1 = []
+result_table_2 = []
 for folder_name in case_folders:
     if not re.match(r'.*UD\d{6}', folder_name):
         continue
@@ -63,9 +63,18 @@ for folder_name in case_folders:
         vector = []
         inconsistency_list = []
     
-    # result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
-    result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
-    result_table
+    result_table_1.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector))
+    result_table_2.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
+
+with open('output_1.txt', 'w') as f:
+    with redirect_stdout(f):
+        for line in result_table_1:
+            print(line, sep='\n')
+
+with open('output_2.txt', 'w') as f:
+    with redirect_stdout(f):
+        for line in result_table_2:
+            print(line, sep='\n')
 
 ### ask for main folder
 ### ask for kit
