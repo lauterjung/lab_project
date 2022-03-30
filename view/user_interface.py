@@ -90,8 +90,8 @@ with open('output_2.txt', 'w') as f:
 # TODO: if exclusion, generate repetition request to secretary (.txt) and print
 
 
-# for case in db.lab_cases:
-#     for subject in case.subjects:
-#         print(subject.name)
-#         for genotype in subject.genetic_profile:
-#             print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)
+for case in db.lab_cases:
+    for subject in case.subjects:
+        print(subject.name)
+        for genotype in subject.genetic_profile:
+            print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)

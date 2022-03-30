@@ -30,6 +30,7 @@ class LabCase:
     mother_x_child: list[str]
 
     details_amelogenin_swap: list[tuple[bool, Subject]]
+    inconsistencies: list[Subject, Subject, list[str]]
 
     def __init__(self,  name: str):
         self.name = name
