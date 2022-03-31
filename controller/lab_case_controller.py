@@ -43,7 +43,7 @@ class LabCaseController():
                 return subject
         return None
     
-    def set_type_of_case(self, case) -> LabCaseType:
+    def define_type_of_case(self, case) -> LabCaseType:
         individual_types = []
         for subject in case.subjects:
             individual_types.append(subject.subject_type.name)

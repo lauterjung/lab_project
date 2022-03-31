@@ -45,14 +45,14 @@ class CaseProcessingServiceTest(unittest.TestCase):
     def test_check_swap_trio(self):
         case_processing_service = CaseProcessingService()
 
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_000), [0, 0, 0]) 
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_200), [2, 0, 0])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_400), [4, 0, 0])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_020), [0, 2, 0])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_040), [0, 4, 0])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_002), [0, 0, 2])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_004), [0, 0, 4])
-        self.assertEqual(case_processing_service.check_swap_trio(self.test_setup.case_111), [1, 1, 1])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_000), [0, 0, 0]) 
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_200), [2, 0, 0])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_400), [4, 0, 0])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_020), [0, 2, 0])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_040), [0, 4, 0])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_002), [0, 0, 2])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_004), [0, 0, 4])
+        self.assertEqual(case_processing_service.check_inconcistencies_trio(self.test_setup.case_111), [1, 1, 1])
 
     # def test_set_case_subtype(self):
     #     case_processing_service = CaseProcessingService()

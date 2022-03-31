@@ -1,33 +1,22 @@
+import datetime
+
+current_date = datetime.datetime.now()
+
+#full_name = input("Nome completo: ").upper()
+full_name = "Miguel Busarello Lauterjung".upper()
 var = "1"
-query = ('\n\n\n, ' + \
-        'CASO: ' + var + " " + var + '\n\n' + \
-        'EXCLUSAO\n\n,' + \
-        'KIT A SER UTILIZADO:  (X) ' + var + '\n\n,' + \
-        'PASTA: ' + var + ' ' + var + '_REP2_' + var + '\n\n\n,' + \
-        'INDIVIDUOS A GENOTIPAR:\n\n,' + \
-        '\t\t\t\t' + var + ' ' + var + 'F_REP2_' + var + '\n,' + \
-        '\t\t\t\t' + var + ' ' + var + 'SP_REP2_' + var + '\n\n\n\n,' + \
-        '' + var + '\n,' + \
-        'LAGES SC, ' + var +'')
+lab_case = "UD990000"
+kit = "VE"
 
-query = ('\n\n\n, '
-        'CASO: ' + var + " " + var + '\n\n'
-        'EXCLUSAO\n\n,'
-        'KIT A SER UTILIZADO:  (X) ' + var + '\n\n,'
-        'PASTA: ' + var + ' ' + var + '_REP2_' + var + '\n\n\n,'
-        'INDIVIDUOS A GENOTIPAR:\n\n,'
-        '\t\t\t\t' + var + ' ' + var + 'F_REP2_' + var + '\n,'
-        '\t\t\t\t' + var + ' ' + var + 'SP_REP2_' + var + '\n\n\n\n,'
-        '' + var + '\n,'
-        'LAGES SC, ' + var +'')
+exclusion_test = ('\n\n\n'
+        'CASO: ' + lab_case[0:4] + " " + lab_case[4:8] + '\n\n'
+        'EXCLUSAO\n\n'
+        'KIT A SER UTILIZADO:  (X) ' + kit + '\n\n'
+        'PASTA: ' + lab_case[0:4] + ' ' + lab_case[4:8] + '_REP2_' + kit + '\n\n\n'
+        'INDIVIDUOS A GENOTIPAR:\n\n'
+        '\t\t\t\t' + lab_case[0:4] + ' ' + lab_case[4:8] + 'F_REP2_' + var + '\n'
+        '\t\t\t\t' + lab_case[0:4] + ' ' + lab_case[4:8] + 'SP_REP2_' + var + '\n\n\n\n'
+        '' + full_name + '\n'
+        'LAGES SC, ' + current_date.strftime("%d %b %Y").upper())
 
-# pedido = "\n\n\n" +\
-#  "CASO: ", substr(caso, 1, 4), " ", substr(caso, 5, 8), "\n\n",
-#  "EXCLUSAO", "\n\n", 
-#  "KIT A SER UTILIZADO:  (X) ", kit_rep2, "\n\n",
-#  "PASTA:  ", substr(caso, 1, 4), " ", substr(caso, 5, 8), "_REP2_", kit_rep2, "\n\n\n",
-#  "INDIVIDUOS A GENOTIPAR:", "\n\n",
-#  "\t\t\t\t", substr(caso, 1, 4), " ", substr(caso, 5, 8), "F_REP2_", kit_rep2, "\n",
-#  "\t\t\t\t", substr(caso, 1, 4), " ", substr(caso, 5, 8), "SP_REP2_", kit_rep2, "\n\n\n\n",
-#  nome_completo, "\n",
-#  "LAGES SC, ", fdata)"
+print(exclusion_test)

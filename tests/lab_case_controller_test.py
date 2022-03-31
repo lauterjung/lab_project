@@ -107,12 +107,12 @@ class LabCaseControllerTest(unittest.TestCase):
         database = LabCaseDBMock()
         controller = LabCaseController(database)
 
-        lab_case_INVALID.type_of_case = controller.set_type_of_case(lab_case_INVALID)
-        lab_case_TRIO_AF.type_of_case = controller.set_type_of_case(lab_case_TRIO_AF)
-        lab_case_TRIO_AM.type_of_case = controller.set_type_of_case(lab_case_TRIO_AM)
-        lab_case_DUO_AF.type_of_case = controller.set_type_of_case(lab_case_DUO_AF)
-        lab_case_DUO_AM.type_of_case = controller.set_type_of_case(lab_case_DUO_AM)
-        lab_case_COMPLEX.type_of_case = controller.set_type_of_case(lab_case_COMPLEX)
+        lab_case_INVALID.type_of_case = controller.define_type_of_case(lab_case_INVALID)
+        lab_case_TRIO_AF.type_of_case = controller.define_type_of_case(lab_case_TRIO_AF)
+        lab_case_TRIO_AM.type_of_case = controller.define_type_of_case(lab_case_TRIO_AM)
+        lab_case_DUO_AF.type_of_case = controller.define_type_of_case(lab_case_DUO_AF)
+        lab_case_DUO_AM.type_of_case = controller.define_type_of_case(lab_case_DUO_AM)
+        lab_case_COMPLEX.type_of_case = controller.define_type_of_case(lab_case_COMPLEX)
 
         self.assertEquals(lab_case_INVALID.type_of_case, LabCaseType.invalid)
         self.assertEquals(lab_case_TRIO_AF.type_of_case, LabCaseType.trio)

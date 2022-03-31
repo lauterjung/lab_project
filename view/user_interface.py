@@ -12,7 +12,7 @@ controller = LabCaseController(db)
 case_processing = CaseProcessingService()
 
 analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
-kit = input("Qual kit está sendo usado?").upper()
+kit = input("Qual kit está sendo usado? ").upper()
 case_folders = next(os.walk(analyze_folder+'.'))[1]
 
 result_table_1 = []
@@ -39,7 +39,7 @@ for folder_name in case_folders:
 
     csv_file = analyze_folder+"\\"+folder_name+"\\"+csv_files[0]
     controller.import_allele_table(case, csv_file)
-    case.type_of_case = controller.set_type_of_case(case)
+    case.type_of_case = controller.define_type_of_case(case)
 
     case_processing.check_case_amelogenin_swap(case)
     
@@ -47,7 +47,7 @@ for folder_name in case_folders:
     # case.subtype_of_case = case_processing.set_case_subtype(case)
     
     if case.type_of_case == LabCaseType.trio:
-        vector = case_processing.check_swap_trio(case)
+        vector = case_processing.check_inconcistencies_trio(case)
         results_swap = ""
         results_mutation_C_AF = ""
         results_mutation_M_C = ""

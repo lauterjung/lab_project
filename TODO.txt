@@ -1,15 +1,8 @@
 TODO
 
-lab case: instead of 3 attributes, a single list with subject1, subject2 and list of locus
-instead of check_swap_trio, two methods that take 2 or 3 individuals and return/set inconsistency locus
-check_swap_trio: create list to store results and set only at the end 
-
-check_case_amelogenin_swap: delete details_amelogenin_swap and create LabCase method that returns what is inside of it
-set_type_of_case -> define_/check_ ...
-
-controller: register 
-	create populate_lab_case
 service: calculations
+controller: register 
+	create/populate_lab_case
 
 return vs. set .attribute
 
@@ -21,15 +14,21 @@ calculate_locus
 controller/case_processing_service.py
     # TODO: maternity trio tests (C, AM, F)
     # TODO: F1 and F2 in the same case. M F1 F2 and SP type is trio or complex?
-    # TODO: change method name
 
 model/genotype.py
     # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
 
-no_data for locus x
-generate one genetic profile using two or more kits
+next steps
 
-regex testing
-imrpove regex (_A, _B, ..._)
+    repetition requests 
+        check if kit contains mutation locus
 
-generate allele frequency database for the lab
+    calculations
+
+    no_data for locus x
+
+    generate one genetic profile using two or more kits
+
+    improve regex (SP_A, SP_B, ..._)
+
+    generate allele frequency database for the lab
