@@ -3,49 +3,22 @@ import os
 import re
 
 from controller.case_processing_service import CaseProcessingService
+from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController
 from model.lab_case import LabCase, LabCaseType
-from tests.lab_case_controller_test import LabCaseDBMock
 
-db = LabCaseDBMock()
+db = LabCaseDB()
 controller = LabCaseController(db)
 case_processing = CaseProcessingService()
 
-analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
-kit = input("Qual kit está sendo usado? ").upper()
-case_folders = next(os.walk(analyze_folder+'.'))[1]
-
 result_table_1 = []
 result_table_2 = []
-for folder_name in case_folders:
-    if not re.match(r'.*UD\d{6}', folder_name):
-        continue
 
-    case = LabCase(folder_name)
-    controller.register_lab_case(case)
+controller.register_from_folder()
+controller.import_csv_from_folder()
 
-    files_in_folder = next(os.walk(analyze_folder+"\\"+folder_name))[2]
-
-    regex_pattern = re.compile(r'.*UD\d{6}.*'+kit+'.*\.csv$')
-    csv_files = list(filter(regex_pattern.match, files_in_folder))
-
-    if len(csv_files) != 1:
-        if len(csv_files) == 0:
-            print("Não foram encontrados arquivos .csv para o caso " + folder_name + " .")
-        elif len(csv_files) > 1:
-            print("Mais de um .csv encontrado para o caso " + folder_name + " .")
-        print("Esse caso será pulado")
-        continue
-
-    csv_file = analyze_folder+"\\"+folder_name+"\\"+csv_files[0]
-    controller.import_allele_table(case, csv_file)
-    case.type_of_case = controller.define_type_of_case(case)
-
-    case_processing.check_case_amelogenin_swap(case)
-    
-    # abc = case_processing.set_case_subtype(case)
-    # case.subtype_of_case = case_processing.set_case_subtype(case)
-    
+for case in db.lab_cases:
+    case_processing.populate_lab_case(case)
     if case.type_of_case == LabCaseType.trio:
         vector = case_processing.check_inconcistencies_trio(case)
         results_swap = ""
@@ -63,8 +36,8 @@ for folder_name in case_folders:
         vector = []
         inconsistency_list = []
     
-    result_table_1.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector))
-    result_table_2.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
+    result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector))
+    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector, inconsistency_list))
 
 with open('output_1.txt', 'w') as f:
     with redirect_stdout(f):

@@ -1,10 +1,7 @@
 TODO
 
-service: calculations
-controller: register 
-	create/populate_lab_case
-
-return vs. set .attribute
+repetition requests 
+    # check if kit contains mutation locus
 
 calculate_locus
     # locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
@@ -19,9 +16,6 @@ model/genotype.py
     # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
 
 next steps
-
-    repetition requests 
-        check if kit contains mutation locus
 
     calculations
 

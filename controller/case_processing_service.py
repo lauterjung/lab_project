@@ -4,9 +4,38 @@ from model.lab_case import LabCase, LabCaseSubType, LabCaseType
 from model.subject import Gender, Subject, SubjectType 
 
 class CaseProcessingService():
-    def __init__(self):
-        pass
     
+    def populate_lab_case(self, lab_case: LabCase):
+        lab_case.type_of_case = self.define_type_of_case(lab_case)
+        lab_case.amelogenin_swap = self.check_case_amelogenin_swap(lab_case)
+        lab_case.subtype_of_case = self.define_case_subtype(lab_case)
+
+    def define_type_of_case(self, case) -> LabCaseType:
+        individual_types = []
+        for subject in case.subjects:
+            individual_types.append(subject.subject_type.name)
+                                                            
+        if SubjectType.child.name not in individual_types:
+            return LabCaseType.invalid
+        
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
+                   return LabCaseType.duo
+
+        if len(individual_types) == 2:
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]):
+                   return LabCaseType.maternity_duo
+        
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
+                    return LabCaseType.trio
+
+        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
+            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]):
+                    return LabCaseType.maternity_trio
+        
+        return LabCaseType.complex
+
     def check_subject_amelogenin_swap(self, subject: Subject) -> bool:
         for genotype in subject.genetic_profile:
             if (genotype.locus == "Amel" and genotype.allele_1 == "X" and genotype.allele_2 == "Y" and subject.gender == Gender.female) or \
@@ -20,6 +49,7 @@ class CaseProcessingService():
         for subject in lab_case.subjects:
             if self.check_subject_amelogenin_swap(subject) == True:
                 result.append((True, subject))
+            return result
 
     def check_inconsistencies_two_subjects(self, lab_case: LabCase, subject_1: Subject, subject_2: Subject) -> list[Subject, Subject, list[str]]:
         subject_1_genotype = subject_1.get_genetic_profile_as_dictionary()
@@ -77,6 +107,10 @@ class CaseProcessingService():
         lab_case.mother_x_alledged_father = []
         lab_case.mother_x_child = []
 
+        mother_x_alledged_father = []
+        mother_x_child = []
+        child_x_alledged_father = []
+        
         mother_genotype = mother.get_genetic_profile_as_dictionary()
         alledged_father_genotype = alledged_father.get_genetic_profile_as_dictionary()        
 
@@ -87,9 +121,6 @@ class CaseProcessingService():
             child_alleles = [genotype.allele_1, genotype.allele_2]
             mother_alleles = [mother_genotype[genotype.locus].allele_1, mother_genotype[genotype.locus].allele_2]
             father_alleles = [alledged_father_genotype[genotype.locus].allele_1, alledged_father_genotype[genotype.locus].allele_2]              
-            mother_x_alledged_father = []
-            mother_x_child = []
-            child_x_alledged_father = []
 
             if len(set(father_alleles) & set(mother_alleles)) == 0:      
                 mother_x_alledged_father.append(genotype.locus)
@@ -109,15 +140,14 @@ class CaseProcessingService():
         return [len(mother_x_alledged_father), len(mother_x_child), len(child_x_alledged_father)]    
     
     def define_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:
-        controller = LabCaseController()
-        if controller.define_type_of_case(lab_case) == LabCaseType.duo or controller.define_type_of_case(lab_case) == LabCaseType.complex:         
-            if len(lab_case.details_amelogenin_swap) > 0:
+        if self.define_type_of_case(lab_case) == LabCaseType.duo or self.define_type_of_case(lab_case) == LabCaseType.complex: # use method or attribute?
+            if len(lab_case.amelogenin_swap) > 0:
                 return LabCaseSubType.swap
             else:
                 return LabCaseSubType.ready
         
-        if controller.define_type_of_case(lab_case) == LabCaseType.trio:
-            if len(lab_case.details_amelogenin_swap) > 0:
+        if self.define_type_of_case(lab_case) == LabCaseType.trio:
+            if len(lab_case.amelogenin_swap) > 0:
                 return LabCaseSubType.swap 
             
             vector = self.check_inconcistencies_trio(lab_case)

@@ -1,4 +1,6 @@
 import csv
+import os
+import re
 
 from model.genotype import Genotype
 from model.lab_case import LabCase, LabCaseType
@@ -8,6 +10,7 @@ from controller.database import LabCaseDB
 class LabCaseController():
     def __init__(self, db: LabCaseDB):
         self.db = db
+        self.analyze_folder = "" # code should be working without this
           
     def register_lab_case(self, case: LabCase) -> None:
         if self.db.fetch(case.name) == None:
@@ -42,29 +45,37 @@ class LabCaseController():
             if subject.name == name:
                 return subject
         return None
-    
-    def define_type_of_case(self, case) -> LabCaseType:
-        individual_types = []
-        for subject in case.subjects:
-            individual_types.append(subject.subject_type.name)
-                                                            
-        if SubjectType.child.name not in individual_types:
-            return LabCaseType.invalid
-        
-        if len(individual_types) == 2:
-            if all(x in individual_types for x in [SubjectType.child.name, SubjectType.alledged_father.name]):
-                   return LabCaseType.duo
 
-        if len(individual_types) == 2:
-            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name]):
-                   return LabCaseType.maternity_duo
-        
-        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
-            if all(x in individual_types for x in [SubjectType.mother.name, SubjectType.child.name, SubjectType.alledged_father.name]):
-                    return LabCaseType.trio
+    def register_from_folder(self) -> None: # previously a single loop for register and import allele table
+        self.analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ") # used on next method as well. How to input only once? Global?
+        case_folders = next(os.walk(self.analyze_folder+'.'))[1]
 
-        if len(individual_types) == 3: # >= 3, more than 1 child (F1, F2, ...)
-            if all(x in individual_types for x in [SubjectType.alledged_mother.name, SubjectType.child.name, SubjectType.father.name]):
-                    return LabCaseType.maternity_trio
-        
-        return LabCaseType.complex
+        for folder_name in case_folders:
+            if not re.match(r'.*UD\d{6}$', folder_name):
+                continue
+            case = LabCase(folder_name)
+            self.register_lab_case(case)
+
+    def import_csv_from_folder(self) -> None:
+        if self.analyze_folder == None:
+            self.analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
+        kit = input("Qual kit está sendo usado? ").upper()
+        for case in self.db.lab_cases:
+            if not re.match(r'.*UD\d{6}$', case.name):
+                continue
+
+            files_in_folder = next(os.walk(self.analyze_folder + "\\" + case.name))[2]
+
+            regex_pattern = re.compile(r'.*UD\d{6}.*'+kit+'.*\.csv$')
+            csv_files = list(filter(regex_pattern.match, files_in_folder))
+
+            if len(csv_files) != 1:
+                if len(csv_files) == 0:
+                    print("Não foram encontrados arquivos .csv para o caso " + case.name + " .")
+                elif len(csv_files) > 1:
+                    print("Mais de um .csv encontrado para o caso " + case.name + " .")
+                print("Esse caso será pulado")
+                continue
+
+            csv_file = self.analyze_folder + "\\" + case.name + "\\" + csv_files[0]
+            self.import_allele_table(case, csv_file)
