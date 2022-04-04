@@ -25,9 +25,9 @@ class LabCase:
     type_of_case: LabCaseType
     subtype_of_case: LabCaseSubType
 
-    child_x_alledged_father: list[str]
-    mother_x_alledged_father: list[str]
-    mother_x_child: list[str]
+    child_x_alledged_father: list[str] # to be removed
+    mother_x_alledged_father: list[str] # to be removed
+    mother_x_child: list[str] # to be removed
 
     amelogenin_swap: list[tuple[bool, Subject]]
     inconsistencies: list[Subject, Subject, list[str]]

@@ -1,8 +1,5 @@
 from contextlib import redirect_stdout
-import os
-import re
-
-from controller.case_processing_service import CaseProcessingService
+from controller.case_processing_service import CaseProcessingService, SubjectType
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController
 from model.lab_case import LabCase, LabCaseType
@@ -11,16 +8,19 @@ db = LabCaseDB()
 controller = LabCaseController(db)
 case_processing = CaseProcessingService()
 
+analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
+kit = input("Qual kit está sendo usado? ").upper()
+
 result_table_1 = []
 result_table_2 = []
 
-controller.register_from_folder()
-controller.import_csv_from_folder()
+controller.register_from_folder(analyze_folder)
 
 for case in db.lab_cases:
+    controller.import_csv_from_folder(case, analyze_folder, kit)
     case_processing.populate_lab_case(case)
     if case.type_of_case == LabCaseType.trio:
-        vector = case_processing.check_inconcistencies_trio(case)
+        vector = case_processing.OLD_check_inconcistencies_trio(case)
         results_swap = ""
         results_mutation_C_AF = ""
         results_mutation_M_C = ""
@@ -39,32 +39,18 @@ for case in db.lab_cases:
     result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector))
     result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector, inconsistency_list))
 
-with open('output_1.txt', 'w') as f:
-    with redirect_stdout(f):
-        for line in result_table_1:
-            print(line, sep='\n')
+# with open('output_1.txt', 'w') as f:
+#     with redirect_stdout(f):
+#         for line in result_table_1:
+#             print(line, sep='\n')
 
-with open('output_2.txt', 'w') as f:
-    with redirect_stdout(f):
-        for line in result_table_2:
-            print(line, sep='\n')
+# with open('output_2.txt', 'w') as f:
+#     with redirect_stdout(f):
+#         for line in result_table_2:
+#             print(line, sep='\n')
 
-### ask for main folder
-### ask for kit
-### get directory names
-### from directory names, register in DB
-### read case .csv from respective kit
-
-# verify case type
-# verify swaps and case subtype
-# TODO: calculations
-# generate summary table (Case, Type, Log)
-# TODO: better log (which locus has inconsistencies?)
-# TODO: if exclusion, generate repetition request to secretary (.txt) and print
-
-
-for case in db.lab_cases:
-    for subject in case.subjects:
-        print(subject.name)
-        for genotype in subject.genetic_profile:
-            print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)
+# for case in db.lab_cases:
+#     for subject in case.subjects:
+#         print(subject.name)
+#         for genotype in subject.genetic_profile:
+#             print(genotype.locus + " " + genotype.allele_1 + " " + genotype.allele_2)

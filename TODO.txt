@@ -1,6 +1,12 @@
 TODO
 
-repetition requests 
+view/user_interface.py
+    # verify swaps and case subtype
+    # TODO: calculations
+    # TODO: if exclusion, generate repetition request to secretary (.txt) and print
+
+repetition requests
+    # implementation
     # check if kit contains mutation locus
 
 calculate_locus
