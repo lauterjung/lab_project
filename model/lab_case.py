@@ -30,7 +30,7 @@ class LabCase:
     mother_x_child: list[str] # to be removed
 
     amelogenin_swap: list[tuple[bool, Subject]]
-    inconsistencies: list[Subject, Subject, list[str]]
+    inconsistencies: list[Subject, Subject, int, list[str]] # make list of lists
 
     def __init__(self,  name: str):
         self.name = name
@@ -39,3 +39,4 @@ class LabCase:
         self.child_x_alledged_father = []
         self.mother_x_alledged_father = []
         self.mother_x_child = []
+        self.inconsistencies = []

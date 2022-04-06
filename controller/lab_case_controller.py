@@ -47,22 +47,14 @@ class LabCaseController():
                 return subject
         return None
 
-    def get_subject_by_type(self, case: LabCase, subject_type: SubjectType):
-        
-        if subject_type == SubjectType.child:
-            result = []
-            for subject in case.subjects:
-                if subject.subject_type == subject_type:
-                    result.append(subject)
-            if len(result) == 0:
-                return None
-            return result
-
-        else:
-            for subject in case.subjects:
-                if subject.subject_type == subject_type:
-                    return(subject)
-                return None
+    def get_subject_by_type(self, case: LabCase, subject_type: SubjectType) -> list[Subject]:
+        result = []
+        for subject in case.subjects:
+            if subject.subject_type == subject_type:
+                result.append(subject)
+        if len(result) == 0:
+            return None
+        return result
 
     def register_from_folder(self, analyze_folder: str) -> None:
         case_folders = next(os.walk(analyze_folder + '.'))[1]

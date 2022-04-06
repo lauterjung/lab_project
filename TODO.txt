@@ -1,5 +1,8 @@
 TODO
 
+lab_case
+    # get_result_table from lab_case.inconsistencies
+
 view/user_interface.py
     # verify swaps and case subtype
     # TODO: calculations
