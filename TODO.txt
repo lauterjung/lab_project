@@ -1,6 +1,9 @@
 TODO
 
+# maybe refactor to kinship instead of SubjectType
+
 lab_case
+    # "container" when multiple child
     # get_result_table from lab_case.inconsistencies
 
 view/user_interface.py

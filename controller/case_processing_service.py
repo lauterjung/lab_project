@@ -1,7 +1,7 @@
 from controller.lab_case_controller import LabCaseController
 from model.genotype import Genotype
 from model.lab_case import LabCase, LabCaseSubType, LabCaseType
-from model.subject import Gender, Subject, SubjectType 
+from model.subject import Gender, Kinship, Subject, SubjectType 
 
 class CaseProcessingService():
     
@@ -10,7 +10,7 @@ class CaseProcessingService():
         lab_case.amelogenin_swap = self.check_case_amelogenin_swap(lab_case)
         lab_case.subtype_of_case = self.define_case_subtype(lab_case)
 
-    def define_type_of_case(self, case) -> LabCaseType:
+    def define_type_of_case(self, case) -> LabCaseType: # maybe refactor to kinship instead of SubjectType
         individual_types = []
         for subject in case.subjects:
             individual_types.append(subject.subject_type.name)
@@ -169,19 +169,13 @@ class CaseProcessingService():
 
     def set_inconsistencies_trio(self, controller: LabCaseController, lab_case: LabCase) -> None: # can i remove controller dependecy?
         result = []
-        mother = controller.get_subject_by_type(lab_case, SubjectType.mother)[0]
-        children = controller.get_subject_by_type(lab_case, SubjectType.child)
-        alledged_father = controller.get_subject_by_type(lab_case, SubjectType.alledged_father)[0]
+        known_parent = controller.get_subject_by_kinship(lab_case, Kinship.known_parent)[0]
+        child = controller.get_subject_by_kinship(lab_case, Kinship.child)[0]
+        alledged_parent = controller.get_subject_by_kinship(lab_case, Kinship.alledged_parent)[0]
 
-        if isinstance(children, list):
-            result.append(self.check_inconsistencies_two_subjects(children[0].genetic_profile, mother, alledged_father))
-        else:
-            result.append(self.check_inconsistencies_two_subjects(children.genetic_profile, mother, alledged_father))
-
-        for child in children:
-            result.append(self.check_inconsistencies_two_subjects(child.genetic_profile, mother, child))
-            result.append(self.check_inconsistencies_alledged_parent(child.genetic_profile, mother, child, alledged_father))
+        result.append(self.check_inconsistencies_two_subjects(child.genetic_profile, known_parent, alledged_parent))
+        result.append(self.check_inconsistencies_two_subjects(child.genetic_profile, known_parent, child))
+        result.append(self.check_inconsistencies_alledged_parent(child.genetic_profile, known_parent, child, alledged_parent))
         
         lab_case.inconsistencies = result
         # return [len(mother_x_alledged_father), len(mother_x_child), len(child_x_alledged_father)]    
-        pass

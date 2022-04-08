@@ -9,6 +9,7 @@ class LabCaseType(Enum):
     maternity_duo = 4
     maternity_trio = 5
     complex = 6
+    double_duo = 7
 
 class LabCaseSubType(Enum):
     ready = 1
@@ -30,7 +31,7 @@ class LabCase:
     mother_x_child: list[str] # to be removed
 
     amelogenin_swap: list[tuple[bool, Subject]]
-    inconsistencies: list[Subject, Subject, int, list[str]] # make list of lists
+    inconsistencies: list[Subject, Subject, int, list[str]]
 
     def __init__(self,  name: str):
         self.name = name
@@ -40,3 +41,4 @@ class LabCase:
         self.mother_x_alledged_father = []
         self.mother_x_child = []
         self.inconsistencies = []
+        

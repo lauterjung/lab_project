@@ -1,24 +1,79 @@
+import copy
 import csv
 import os
 import re
 
 from model.genotype import Genotype
-from model.lab_case import LabCase, LabCaseType
-from model.subject import Subject, SubjectType
+from model.lab_case import LabCase
+from model.subject import Kinship, Subject, SubjectType
 from controller.database import LabCaseDB
 
 class LabCaseController():
+
+    cases_to_remove: list
+
     def __init__(self, db: LabCaseDB):
         self.db = db
-        self.analyze_folder = None # code should be working without this
         self.kit = None
-          
+        self.cases_to_remove = []
+
     def register_lab_case(self, case: LabCase) -> None:
         if self.db.fetch(case.name) == None:
             self.db.save(case)
         else:
             self.db.update(case)
     
+    def delete_lab_case(self, case: LabCase) -> None:
+        if self.db.fetch(case.name) != None:
+            self.db.delete(case)
+
+    # def split_lab_case(self, case: LabCase) -> None: # maybe there is a better way to do this
+    #     children = self.get_subject_by_kinship(case, Kinship.child)
+    #     if len(children) <= 1:
+    #         return
+
+    #     for child in children:
+    #         new_case = LabCase(case.name + child.codification)
+    #         for subject in case.subjects:
+    #             if subject.kinship != Kinship.child:
+    #                 new_case.subjects.append(subject)
+    #         new_case.subjects.append(child)
+    #         self.db.lab_cases.append(new_case)
+    #         del new_case # optional?
+    #     self.delete_lab_case(case)
+
+    def split_lab_case(self, case: LabCase) -> None: # maybe there is a better way to do this
+        children = self.get_subject_by_kinship(case, Kinship.child)
+        alledged_parents = self.get_subject_by_kinship(case, Kinship.alledged_parent)
+        if len(children) <= 1 and len(alledged_parents) <= 1:
+            return
+
+        for child in children:
+            for alledged_parent in alledged_parents:
+                
+                new_case_name = case.name
+                if len(children) > 1:
+                    new_case_name = new_case_name + "_" + child.codification
+                if len(alledged_parents) > 1:
+                    new_case_name = new_case_name + "_" + alledged_parent.codification
+
+                new_case = LabCase(new_case_name)
+                new_case.subjects.append(child)
+                new_case.subjects.append(alledged_parent)
+
+                for subject in case.subjects:
+                    if subject.kinship != Kinship.child and subject.kinship != Kinship.alledged_parent:
+                        new_case.subjects.append(subject)
+
+                self.db.lab_cases.append(new_case)
+                del new_case # optional?
+
+        self.delete_lab_case(case)
+
+    def remove_pending_cases(self):
+        for case in self.cases_to_remove:
+            self.delete_lab_case(case)
+        
     def import_allele_table(self, case: LabCase, file: str) -> None:
         with open(file) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter = ',')
@@ -47,6 +102,11 @@ class LabCaseController():
                 return subject
         return None
 
+    # def __delete_subject(self, case, subject) -> None:
+    #     if subject in case.subjects:
+    #         self.db.lab_cases.remove(subject)
+    #     return None
+
     def get_subject_by_type(self, case: LabCase, subject_type: SubjectType) -> list[Subject]:
         result = []
         for subject in case.subjects:
@@ -54,6 +114,13 @@ class LabCaseController():
                 result.append(subject)
         if len(result) == 0:
             return None
+        return result
+
+    def get_subject_by_kinship(self, case: LabCase, kinship: Kinship) -> list[Subject]:
+        result = []
+        for subject in case.subjects:
+            if subject.kinship == kinship:
+                result.append(subject)
         return result
 
     def register_from_folder(self, analyze_folder: str) -> None:

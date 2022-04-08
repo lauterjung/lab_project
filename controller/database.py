@@ -7,15 +7,18 @@ class LabCaseDB:
     def __init__(self):
         self.lab_cases = []
     
-    def save(self, case: LabCase):
+    def save(self, case: LabCase) -> None:
         self.lab_cases.append(case)
-        # TODO: if exists
     
+    def delete(self, case: LabCase) -> None:
+        if case in self.lab_cases:
+            self.lab_cases.remove(case)
+
     def fetch(self, name: str) -> LabCase:
         for saved_case in self.lab_cases:
             if(saved_case.name == name):
                 return saved_case
-        return None
+        # return None
     
     def update(self, case: LabCase):
         for i, saved_case in enumerate(self.lab_cases):

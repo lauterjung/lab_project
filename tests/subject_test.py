@@ -115,6 +115,5 @@ class TypeOfSubject(unittest.TestCase):
         self.assertEqual(self.test_setup.another_1.gender, Gender.either)
         self.assertEqual(self.test_setup.another_2.gender, Gender.either)
     
-    # TODO:
     def test_get_genetic_profile_as_dictionary(self):
-        pass
+        self.assertEqual(self.test_setup.mother1.get_genetic_profile_as_dictionary()['vWA'], self.test_setup.vWA_1_2)
