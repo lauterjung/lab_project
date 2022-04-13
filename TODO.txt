@@ -1,10 +1,8 @@
 TODO
 
+# tests
 # maybe refactor to kinship instead of SubjectType
-
-lab_case
-    # "container" when multiple child
-    # get_result_table from lab_case.inconsistencies
+# markers to enum
 
 view/user_interface.py
     # verify swaps and case subtype
@@ -20,10 +18,6 @@ calculate_locus
     # combined_paternity_index: float
     # number_of_inconsistencies: int
 
-controller/case_processing_service.py
-    # TODO: maternity trio tests (C, AM, F)
-    # TODO: F1 and F2 in the same case. M F1 F2 and SP type is trio or complex?
-
 model/genotype.py
     # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
 
@@ -31,7 +25,7 @@ next steps
 
     calculations
 
-    no_data for locus x
+    "no data" for locus x
 
     generate one genetic profile using two or more kits
 

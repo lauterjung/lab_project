@@ -28,6 +28,10 @@ db.lab_cases.sort(key = lambda x: x.name)
 
 for case in db.lab_cases:
     case_processing.populate_lab_case(case)
+    case_processing.set_inconsistencies(controller, case)
+    case_processing.set_inconsistencies_vector(case)
+    vector2 = case.inconsistencies_vector
+
     if case.type_of_case == LabCaseType.trio:
         vector = case_processing.OLD_check_inconcistencies_trio(case)
         results_swap = ""
@@ -45,8 +49,8 @@ for case in db.lab_cases:
         vector = []
         inconsistency_list = []
     
-    result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector))
-    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector, inconsistency_list))
+    result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2))
+    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2, inconsistency_list))
     result_table_2
 
 # with open('output_1.txt', 'w') as f:

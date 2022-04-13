@@ -32,13 +32,16 @@ class LabCase:
 
     amelogenin_swap: list[tuple[bool, Subject]]
     inconsistencies: list[Subject, Subject, int, list[str]]
+    inconsistencies_vector: list
 
     def __init__(self,  name: str):
         self.name = name
+        self.container = name
         self.subjects = []
         self.amelogenin_swap = []
-        self.child_x_alledged_father = []
-        self.mother_x_alledged_father = []
-        self.mother_x_child = []
+        self.child_x_alledged_father = [] # to be removed
+        self.mother_x_alledged_father = [] # to be removed
+        self.mother_x_child = [] # to be removed
         self.inconsistencies = []
+        self.inconsistencies_vector = []
         
