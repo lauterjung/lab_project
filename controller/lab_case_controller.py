@@ -10,12 +10,9 @@ from controller.database import LabCaseDB
 
 class LabCaseController():
 
-    cases_to_remove: list
-
     def __init__(self, db: LabCaseDB):
         self.db = db
         self.kit = None
-        self.cases_to_remove = []
 
     def register_lab_case(self, case: LabCase) -> None:
         if self.db.fetch(case.name) == None:
@@ -27,22 +24,7 @@ class LabCaseController():
         if self.db.fetch(case.name) != None:
             self.db.delete(case)
 
-    # def split_lab_case(self, case: LabCase) -> None: # maybe there is a better way to do this
-    #     children = self.get_subject_by_kinship(case, Kinship.child)
-    #     if len(children) <= 1:
-    #         return
-
-    #     for child in children:
-    #         new_case = LabCase(case.name + child.codification)
-    #         for subject in case.subjects:
-    #             if subject.kinship != Kinship.child:
-    #                 new_case.subjects.append(subject)
-    #         new_case.subjects.append(child)
-    #         self.db.lab_cases.append(new_case)
-    #         del new_case # optional?
-    #     self.delete_lab_case(case)
-
-    def split_lab_case(self, case: LabCase) -> None: # maybe there is a better way to do this
+    def split_lab_case(self, case: LabCase) -> None:
         children = self.get_subject_by_kinship(case, Kinship.child)
         alledged_parents = self.get_subject_by_kinship(case, Kinship.alledged_parent)
         if len(children) <= 1 and len(alledged_parents) <= 1:
@@ -69,10 +51,6 @@ class LabCaseController():
                 del new_case # optional?
 
         self.delete_lab_case(case)
-
-    def remove_pending_cases(self):
-        for case in self.cases_to_remove:
-            self.delete_lab_case(case)
         
     def import_allele_table(self, case: LabCase, file: str) -> None:
         with open(file) as csv_file:
@@ -101,11 +79,6 @@ class LabCaseController():
             if subject.name == name:
                 return subject
         return None
-
-    # def __delete_subject(self, case, subject) -> None:
-    #     if subject in case.subjects:
-    #         self.db.lab_cases.remove(subject)
-    #     return None
 
     def get_subject_by_type(self, case: LabCase, subject_type: SubjectType) -> list[Subject]:
         result = []
@@ -141,7 +114,7 @@ class LabCaseController():
         if len(csv_files) != 1:
             if len(csv_files) == 0:
                 print("Não foram encontrados arquivos .csv para o caso " + case.name + " .")
-            elif len(csv_files) > 1:
+            else:
                 print("Mais de um .csv encontrado para o caso " + case.name + " .")
             print("Esse caso será pulado")
             return

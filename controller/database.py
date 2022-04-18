@@ -18,7 +18,6 @@ class LabCaseDB:
         for saved_case in self.lab_cases:
             if(saved_case.name == name):
                 return saved_case
-        # return None
     
     def update(self, case: LabCase):
         for i, saved_case in enumerate(self.lab_cases):

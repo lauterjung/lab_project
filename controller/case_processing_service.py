@@ -51,7 +51,6 @@ class CaseProcessingService():
                 result.append((True, subject))
             return result
 
-    # do I need to return a Subject, or only SubjectType/nomenclature/...?
     def check_inconsistencies_two_subjects(self, child_genetic_profile: list[Genotype], subject_1: Subject, subject_2: Subject) -> list[Subject, Subject, int, list[str]]:
         subject_1_genotype = subject_1.get_genetic_profile_as_dictionary()
         subject_2_genotype = subject_2.get_genetic_profile_as_dictionary()
@@ -67,8 +66,6 @@ class CaseProcessingService():
             if len(set(subject_1_alleles) & set(subject_2_alleles)) == 0:      
                 inconsistencies_locus_list.append(genotype.locus)
 
-        # if len(inconsistencies_locus_list) == 0:
-        #     return None
         return [subject_1, subject_2, len(inconsistencies_locus_list), inconsistencies_locus_list]
     
     def check_inconsistencies_alledged_parent(self, child_genetic_profile: list[Genotype], known_parent: Subject, child: Subject, alledged_parent: Subject) -> list[Subject, Subject, int, list[str]]:
@@ -90,8 +87,6 @@ class CaseProcessingService():
             elif len(set(child_alleles) & set(alledged_parent_alleles)) == 0:
                    inconsistencies_locus_list.append(genotype.locus)
 
-        # if len(inconsistencies_locus_list) == 0: 
-        #     return None
         return [child, alledged_parent, len(inconsistencies_locus_list), inconsistencies_locus_list]    
         
     def OLD_check_inconcistencies_trio(self, lab_case: LabCase) -> list[int]: 
@@ -127,7 +122,7 @@ class CaseProcessingService():
             if len(set(child_alleles) & set(mother_alleles)) == 0:  
                 mother_x_child.append(genotype.locus)
 
-            if len(set(child_alleles) & set(mother_alleles)) == 1 and child_alleles[0] != child_alleles[1]: #len(set(child_alleles) - set(mother_alleles)) != 0:
+            if len(set(child_alleles) & set(mother_alleles)) == 1 and child_alleles[0] != child_alleles[1]:
                 if list(set(child_alleles) - set(mother_alleles))[0] not in father_alleles:
                     child_x_alledged_father.append(genotype.locus)
             elif len(set(child_alleles) & set(father_alleles)) == 0:
@@ -198,5 +193,3 @@ class CaseProcessingService():
                (inconsistency[1].kinship == Kinship.alledged_parent and inconsistency[0].kinship == Kinship.child):
                 results[2] = inconsistency[2]
         case.inconsistencies_vector = results
-
-    # if(Kinship.alledged_parent & Kinship.alledged_parent) in [inconsistency[0].Kinship, inconsistency[1].Kinship]
