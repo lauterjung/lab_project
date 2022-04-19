@@ -1,8 +1,6 @@
 import csv
-
 from model.locus import Locus
 from controller.database import LocusDB
-
 
 class AlleleFrequencyService:
     def __init__(self, db: LocusDB):
@@ -36,8 +34,7 @@ class AlleleFrequencyService:
         locus = self.db.fetch(locus_name)
         if locus != None:
             if allele_name in locus.alleles:
-                return locus.alleles[allele_name]
-            
+                if locus.alleles[allele_name] >= 0.001:
+                    return locus.alleles[allele_name]
         return 0.001
-
         

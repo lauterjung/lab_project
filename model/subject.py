@@ -3,6 +3,11 @@ from enum import Enum
 
 from model.genotype import Genotype
 
+class Gender(Enum):
+    male = 1
+    female = 2
+    either = 3
+
 class SubjectType(Enum):
     mother = 1                  # M
     child = 2                   # F
@@ -21,16 +26,17 @@ class SubjectType(Enum):
     paternal_uncle = 15         # [S]TPx
     another = 99                # OUT
 
-class Gender(Enum):
-    male = 1
-    female = 2
-    either = 3
+class Kinship(Enum):
+    alledged_parent = 1
+    known_parent = 2
+    child = 3
+    other = 99
 
 class Subject():
     codification: str
     subject_type: SubjectType
     gender: Gender
-    amelogenin_swap: bool
+    kinship: Kinship
     
     def __init__(self, name: str, genetic_profile: list[Genotype]):
         self.name = name
@@ -38,6 +44,7 @@ class Subject():
         self.codification = self.__set_subject_codification()
         self.subject_type = self.__set_subject_type()
         self.gender = self.__set_subject_gender()
+        self.kinship = self.__set_kinship()
         
     def __set_subject_codification(self) -> str:
         return re.findall(r"(?<=UD\d{6})_?[a-zA-Z0-9]+", self.name)[0]
@@ -87,7 +94,17 @@ class Subject():
             return Gender.female
         else:
             return Gender.either
-            
+    
+    def __set_kinship(self):
+        if self.subject_type == SubjectType.alledged_father or self.subject_type == SubjectType.alledged_mother:
+            return Kinship.alledged_parent
+        elif self.subject_type == SubjectType.father or self.subject_type == SubjectType.mother:
+            return Kinship.known_parent
+        elif self.subject_type == SubjectType.child:
+            return Kinship.child
+        else:
+            return Kinship.other
+
     def get_genetic_profile_as_dictionary(self) -> dict[str: Genotype]:
         dict = {}
         for genotype in self.genetic_profile:

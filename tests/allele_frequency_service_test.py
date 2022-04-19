@@ -37,8 +37,7 @@ class AlleleFrequencyServiceTest(unittest.TestCase):
         self.assertEquals(saved_locus_3.alleles["2,2"], locus_3.alleles["2,2"])
         self.assertEquals(saved_locus_4.alleles["1"], locus_4.alleles["1"])
         self.assertEquals(len(db.loci), 4)
-    
-    
+
     def test_get_allele_frequency(self):
         allele_name = "1"   
         
@@ -68,6 +67,20 @@ class AlleleFrequencyServiceTest(unittest.TestCase):
         
         self.assertEquals(unregistered_locus_allele_frequency, 0.001)
         self.assertEquals(unregistered_allele_frequency, 0.001)
+
+    def test_get_allele_frequency_minimum(self):
+        allele_name = "1"   
+        
+        locus = Locus("FGA")
+        locus.alleles[allele_name] = 0.00001
+       
+        db = LocusDBMock()
+        db.save(locus)
+        
+        service = AlleleFrequencyService(db)
+        allele_frequency = service.get_allele_frequency(locus.name, allele_name)
+        
+        self.assertEquals(allele_frequency, 0.001)    
         
 class LocusDBMock(LocusDB):
     loci: list[Locus]

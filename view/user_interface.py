@@ -1,53 +1,39 @@
-import os
-import re
-import sys
-from unittest import result
-
-from controller.case_processing_service import CaseProcessingService
+from contextlib import redirect_stdout
+from controller.case_processing_service import CaseProcessingService, SubjectType
+from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController
 from model.lab_case import LabCase, LabCaseType
-from tests.lab_case_controller_test import LabCaseDBMock
 
-db = LabCaseDBMock()
+db = LabCaseDB()
 controller = LabCaseController(db)
 case_processing = CaseProcessingService()
 
-analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
-kit = input("Qual kit está sendo usado?").upper()
-case_folders = next(os.walk(analyze_folder+'.'))[1]
+# analyze_folder = input("Insira o diretório da pasta ANALISAR contendo as pastas raiz dos casos: ")
+# kit = input("Qual kit está sendo usado? ").upper()
+analyze_folder = r'C:\Users\User\Dropbox\DNA UDESC\ANALISAR'
+kit = "VE"
 
-result_table = []
-for folder_name in case_folders:
-    if not re.match(r'.*UD\d{6}', folder_name):
-        continue
+result_table_1 = []
+result_table_2 = []
 
-    case = LabCase(folder_name)
-    controller.register_lab_case(case)
+controller.register_from_folder(analyze_folder)
 
-    files_in_folder = next(os.walk(analyze_folder+"\\"+folder_name))[2]
+for case in db.lab_cases:
+    controller.import_csv_from_folder(case, analyze_folder, kit)
 
-    regex_pattern = re.compile(r'.*UD\d{6}.*'+kit+'.*\.csv$')
-    csv_files = list(filter(regex_pattern.match, files_in_folder))
+for case in db.lab_cases:
+    controller.split_lab_case(case)
 
-    if len(csv_files) != 1:
-        if len(csv_files) == 0:
-            print("Não foram encontrados arquivos .csv para o caso " + folder_name + " .")
-        elif len(csv_files) > 1:
-            print("Mais de um .csv encontrado para o caso " + folder_name + " .")
-        print("Esse caso será pulado")
-        continue
+db.lab_cases.sort(key = lambda x: x.name)
 
-    csv_file = analyze_folder+"\\"+folder_name+"\\"+csv_files[0]
-    controller.import_allele_table(case, csv_file)
-    case.type_of_case = controller.set_type_of_case(case)
+for case in db.lab_cases:
+    case_processing.populate_lab_case(case)
+    case_processing.set_inconsistencies(controller, case)
+    case_processing.set_inconsistencies_vector(case)
+    vector2 = case.inconsistencies_vector
 
-    case_processing.check_case_amelogenin_swap(case)
-    
-    # abc = case_processing.set_case_subtype(case)
-    # case.subtype_of_case = case_processing.set_case_subtype(case)
-    
     if case.type_of_case == LabCaseType.trio:
-        vector = case_processing.check_swap_trio(case)
+        vector = case_processing.OLD_check_inconcistencies_trio(case)
         results_swap = ""
         results_mutation_C_AF = ""
         results_mutation_M_C = ""
@@ -63,23 +49,19 @@ for folder_name in case_folders:
         vector = []
         inconsistency_list = []
     
-    # result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
-    result_table.append((case.name, case.type_of_case.name, case.details_amelogenin_swap, vector, inconsistency_list))
-    result_table
+    result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2))
+    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2, inconsistency_list))
+    result_table_2
 
-### ask for main folder
-### ask for kit
-### get directory names
-### from directory names, register in DB
-### read case .csv from respective kit
+# with open('output_1.txt', 'w') as f:
+#     with redirect_stdout(f):
+#         for line in result_table_1:
+#             print(line, sep='\n')
 
-# verify case type
-# verify swaps and case subtype
-# TODO: calculations
-# generate summary table (Case, Type, Log)
-# TODO: better log (which locus has inconsistencies?)
-# TODO: if exclusion, generate repetition request to secretary (.txt) and print
-
+# with open('output_2.txt', 'w') as f:
+#     with redirect_stdout(f):
+#         for line in result_table_2:
+#             print(line, sep='\n')
 
 # for case in db.lab_cases:
 #     for subject in case.subjects:

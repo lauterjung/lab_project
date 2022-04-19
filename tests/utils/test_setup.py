@@ -245,3 +245,4 @@ class TestSetup():
     case_002.subjects.extend([child1, mother7, alledged_father4])
     case_004.subjects.extend([child1, mother8, alledged_father5])
     case_111.subjects.extend([child1, mother6, alledged_father6])
+    

@@ -2,16 +2,27 @@ from model.lab_case import LabCase
 from model.locus import Locus
 
 class LabCaseDB:
+    lab_cases: list[LabCase]
     
-    def save(case: LabCase) -> None:
-        pass
+    def __init__(self):
+        self.lab_cases = []
     
-    def fetch(case: int) -> LabCase:
-        pass
+    def save(self, case: LabCase) -> None:
+        self.lab_cases.append(case)
+    
+    def delete(self, case: LabCase) -> None:
+        if case in self.lab_cases:
+            self.lab_cases.remove(case)
 
-    def update(case: LabCase) -> None:
-        # dar update baseado em chave _id
-        pass
+    def fetch(self, name: str) -> LabCase:
+        for saved_case in self.lab_cases:
+            if(saved_case.name == name):
+                return saved_case
+    
+    def update(self, case: LabCase):
+        for i, saved_case in enumerate(self.lab_cases):
+            if(saved_case.name == case.name):
+                self.lab_cases[i] = case
 
 class LocusDB:
     

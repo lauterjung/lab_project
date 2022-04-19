@@ -1,25 +1,34 @@
 TODO
 
-check_swap_trio: create list to store results and set only at the end 
-lab case: instead of 3 attributes, a single list with subject1, subject2 and list of locus
-instead of check_swap_trio, two methods that take 2 or  3individuals and return/set inconsistency locus
-change gc gf and gm
+# tests
+# maybe refactor to kinship instead of SubjectType
+# markers to enum
 
-check_case_amelogenin_swap: delete details_amelogenin_swap and create LabCase mthod that returns what is inside of it
-set_type_of_case -> define_/check_ ...
+view/user_interface.py
+    # verify swaps and case subtype
+    # TODO: calculations
+    # TODO: if exclusion, generate repetition request to secretary (.txt) and print
 
-controller: register 
-	create populate_lab_case
-service: calculations
-
-return vs. set .attribute
+repetition requests
+    # implementation
+    # check if kit contains mutation locus
 
 calculate_locus
+    # locus_paternity_index = list[tuple[str, float]] # (Genotype.locus, IP)
+    # combined_paternity_index: float
+    # number_of_inconsistencies: int
 
-no_data for locus x
-generate one genetic profile using two or more kits
+model/genotype.py
+    # TODO: modify above method and dependencies (some loci are excluded from everything, others only from calculations). linked_loci: bool
 
-regex testing
-imrpove regex (_A, _B, ..._)
+next steps
 
-generate allele frequency database for the lab
+    calculations
+
+    "no data" for locus x
+
+    generate one genetic profile using two or more kits
+
+    improve regex (SP_A, SP_B, ..._)
+
+    generate allele frequency database for the lab
