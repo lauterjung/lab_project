@@ -105,19 +105,20 @@ class LabCaseController():
             case = LabCase(folder_name)
             self.register_lab_case(case)
 
-    def import_csv_from_folder(self, case: LabCase, analyze_folder: str, kit: str) -> None:
+    def import_csv_from_folder(self, case: LabCase, analyze_folder: str, kit: str) -> str:
         files_in_folder = next(os.walk(analyze_folder + "\\" + case.name))[2]
 
         regex_pattern = re.compile(r'.*UD\d{6}.*' + kit + '.*\.csv$')
         csv_files = list(filter(regex_pattern.match, files_in_folder))
 
+        output_text = ""
         if len(csv_files) != 1:
             if len(csv_files) == 0:
-                print("Não foram encontrados arquivos .csv para o caso " + case.name + " .")
+                output_text = "Não foram encontrados arquivos .csv para o caso " + case.name + ".\nEsse caso será pulado\n"
             else:
-                print("Mais de um .csv encontrado para o caso " + case.name + " .")
-            print("Esse caso será pulado")
-            return
+                output_text = "Mais de um .csv encontrado para o caso " + case.name + ".\nEsse caso será pulado\n"
+            return output_text
 
         csv_file = analyze_folder + "\\" + case.name + "\\" + csv_files[0]
         self.import_allele_table(case, csv_file)
+        return output_text
