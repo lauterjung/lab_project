@@ -16,8 +16,8 @@ class LabCaseSubType(Enum):
     exclusion = 3
     swap = 4
     potential_swap = 5
-    mutation_mother = 6
-    mutation_father = 7
+    mutation_known_parent = 6
+    mutation_alledged_parent = 7
     complex = 8
 
 class LabCase:
@@ -34,6 +34,7 @@ class LabCase:
     amelogenin_swap: list[tuple[bool, Subject]]
     inconsistencies: list[Subject, Subject, int, list[str]]
     inconsistencies_vector: list
+    inconsistencies_labels: list[str]
 
     def __init__(self,  name: str):
         self.name = name
@@ -45,5 +46,6 @@ class LabCase:
         self.mother_x_child = [] # to be removed
         self.inconsistencies = []
         self.inconsistencies_vector = []
+        self.inconsistencies_labels = []
         self.subtype_of_case = []
         

@@ -3,6 +3,7 @@ TODO
 # tests
 # maybe refactor to kinship instead of SubjectType
 # markers to enum
+# lab_case x case
 
 view/user_interface.py
     # verify swaps and case subtype
