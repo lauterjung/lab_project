@@ -5,12 +5,15 @@ from model.subject import Gender, Kinship, Subject, SubjectType
 
 class CaseProcessingService():
     
-    def populate_lab_case(self, lab_case: LabCase):
+    def populate_lab_case(self, controller, lab_case: LabCase):
         lab_case.type_of_case = self.define_type_of_case(lab_case)
         lab_case.amelogenin_swap = self.check_case_amelogenin_swap(lab_case)
+        self.set_inconsistencies(controller, lab_case)
+        self.set_inconsistencies_vector(lab_case)
         lab_case.subtype_of_case = self.define_case_subtype(lab_case)
+        # lab_case.subtype_of_case = self.define_case_subtype(lab_case)
 
-    def define_type_of_case(self, case) -> LabCaseType: # maybe refactor to kinship instead of SubjectType
+    def define_type_of_case(self, case) -> LabCaseType:
         individual_types = []
         for subject in case.subjects:
             individual_types.append(subject.subject_type.name)
@@ -135,32 +138,39 @@ class CaseProcessingService():
         return [len(mother_x_alledged_father), len(mother_x_child), len(child_x_alledged_father)]    
     
     def define_case_subtype(self, lab_case: LabCase) -> LabCaseSubType:
-        if self.define_type_of_case(lab_case) == LabCaseType.duo or self.define_type_of_case(lab_case) == LabCaseType.complex: # use method or attribute?
-            if len(lab_case.amelogenin_swap) > 0:
-                return LabCaseSubType.swap
-            else:
-                return LabCaseSubType.ready
-        
-        if self.define_type_of_case(lab_case) == LabCaseType.trio:
-            if len(lab_case.amelogenin_swap) > 0:
-                return LabCaseSubType.swap 
-            
-            ############# OLD_
-            vector = self.OLD_check_inconcistencies_trio(lab_case)
+        result = []
 
-            if vector[0] <= 3 or vector[1] > 3:
-                return LabCaseSubType.swap
-            if 0 < vector[1] <= 3:
-                return LabCaseSubType.mutation_mother
-            if 0 < vector[2] <= 3:
-                return LabCaseSubType.mutation_father
-            if vector[2] > 3:
-                return LabCaseSubType.exclusion
-            if vector[2] == 0:
-                return LabCaseSubType.ready
+        if self.define_type_of_case(lab_case) == LabCaseType.invalid:
+            result.append(LabCaseSubType.invalid)
+            return result
+
+        if len(lab_case.amelogenin_swap) > 0 or lab_case.inconsistencies_vector[0] == 0:
+            result.append(LabCaseSubType.swap)
+            return result
+
+        if self.define_type_of_case(lab_case) == LabCaseType.complex:
+            result.append(LabCaseSubType.complex)
+            return result
+
+        if self.define_type_of_case(lab_case) == LabCaseType.trio: # use method or attribute?
+            if lab_case.inconsistencies_vector[0] <= 3:
+                result.append(LabCaseSubType.potential_swap)
+            if 0 < lab_case.inconsistencies_vector[1] <= 3:
+                result.append(LabCaseSubType.mutation_mother)
+        
+        if self.define_type_of_case(lab_case) == LabCaseType.trio or \
+           self.define_type_of_case(lab_case) == LabCaseType.duo:
+            if 0 < lab_case.inconsistencies_vector[2] <= 3:
+                result.append(LabCaseSubType.mutation_father)
+            if lab_case.inconsistencies_vector[2] == 0:
+                result.append(LabCaseSubType.inclusion)
+            if lab_case.inconsistencies_vector[2] > 3:
+                result.append(LabCaseSubType.exclusion)
+
+        return result
     
     def case_to_result_table(self, case: LabCase) -> tuple:
-        return(case.name, case.type_of_case.name, case.amelogenin_swap)
+        return(case.name, case.type_of_case.name, case.amelogenin_swap, case.inconsistencies_vector)
 
     def set_inconsistencies(self, controller: LabCaseController, lab_case: LabCase) -> None: # can i remove controller dependecy?
         result = []
@@ -193,3 +203,9 @@ class CaseProcessingService():
                (inconsistency[1].kinship == Kinship.alledged_parent and inconsistency[0].kinship == Kinship.child):
                 results[2] = inconsistency[2]
         case.inconsistencies_vector = results
+    
+    def set_inconsistencies_labels(self, case: LabCase) -> None:
+        pass
+
+    def generate_request(self, case: LabCase) -> None:
+        pass

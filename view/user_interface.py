@@ -1,8 +1,8 @@
 from contextlib import redirect_stdout
-from controller.case_processing_service import CaseProcessingService, SubjectType
+from controller.case_processing_service import CaseProcessingService
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController
-from model.lab_case import LabCase, LabCaseType
+from model.lab_case import LabCaseType
 
 db = LabCaseDB()
 controller = LabCaseController(db)
@@ -27,11 +27,9 @@ for case in db.lab_cases:
 db.lab_cases.sort(key = lambda x: x.name)
 
 for case in db.lab_cases:
-    case_processing.populate_lab_case(case)
-    case_processing.set_inconsistencies(controller, case)
-    case_processing.set_inconsistencies_vector(case)
-    vector2 = case.inconsistencies_vector
-
+    case_processing.populate_lab_case(controller, case)
+    result_table_1.append(case_processing.case_to_result_table(case))
+    
     if case.type_of_case == LabCaseType.trio:
         vector = case_processing.OLD_check_inconcistencies_trio(case)
         results_swap = ""
@@ -49,8 +47,7 @@ for case in db.lab_cases:
         vector = []
         inconsistency_list = []
     
-    result_table_1.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2))
-    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, vector2, inconsistency_list))
+    result_table_2.append((case.name, case.type_of_case.name, case.amelogenin_swap, case.inconsistencies_vector, inconsistency_list))
     result_table_2
 
 # with open('output_1.txt', 'w') as f:
