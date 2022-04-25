@@ -193,14 +193,14 @@ class CaseProcessingService():
         lab_case.inconsistencies = result
 
     # not working:
-    def get_inconsistencies_by_kinship_pair(self, case: LabCase, kinship_1: Kinship, kinship_2: Kinship) -> list:
-        for inconsistency in case.inconsistencies:
-            if (inconsistency[0].kinship.name == kinship_1.name and inconsistency[1].kinship.name == kinship_2.name) or \
-               (inconsistency[1].kinship.name == kinship_1.name and inconsistency[0].kinship.name == kinship_2.name):
-                return inconsistency
-            else:
-                return "NA"
+    # def get_inconsistencies_by_kinship_pair(self, case: LabCase, kinship_1: Kinship, kinship_2: Kinship) -> list:
+    #     for inconsistency in case.inconsistencies:
+    #         if (inconsistency[0].kinship == kinship_1 and inconsistency[1].kinship == kinship_2) or \
+    #            (inconsistency[1].kinship == kinship_1 and inconsistency[0].kinship == kinship_2):
+    #             return inconsistency
+    #     return "NA"
 
+    # not working (child inconcistencies):
     # def set_inconsistencies_vector(self, case: LabCase) -> None:
     #     results = [""] * 3
     #     inconcistencies_known_parent_alledged_parent = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.alledged_parent)
