@@ -1,3 +1,4 @@
+from itertools import chain
 from xml.etree.ElementTree import ElementTree
 from controller.lab_case_controller import LabCaseController
 from model.genotype import Genotype
@@ -13,7 +14,6 @@ class CaseProcessingService():
         self.set_inconsistencies_vector(lab_case)
         lab_case.subtype_of_case = self.define_case_subtype(lab_case)
         self.set_inconsistencies_labels(lab_case)
-        # lab_case.subtype_of_case = self.define_case_subtype(lab_case)
 
     def define_type_of_case(self, case) -> LabCaseType:
         individual_types = []
@@ -172,7 +172,12 @@ class CaseProcessingService():
         return result
     
     def case_to_result_table(self, case: LabCase) -> tuple:
-        return(case.name, case.type_of_case.name, case.amelogenin_swap, case.inconsistencies_vector, case.inconsistencies_labels)
+        name = case.name
+        type_of_case = case.type_of_case.name
+        amelogenin_swap = case.amelogenin_swap if case.amelogenin_swap != [] else " "
+        inconsistencies_vector = case.inconsistencies_vector
+        inconsistencies_labels = " ".join(case.inconsistencies_labels) if case.inconsistencies_labels != [] else " "
+        return(name, type_of_case,amelogenin_swap, inconsistencies_vector, inconsistencies_labels)
 
     def set_inconsistencies(self, controller: LabCaseController, lab_case: LabCase) -> None: # can i remove controller dependecy?
         result = []
@@ -192,29 +197,27 @@ class CaseProcessingService():
 
         lab_case.inconsistencies = result
 
-    # not working:
-    # def get_inconsistencies_by_kinship_pair(self, case: LabCase, kinship_1: Kinship, kinship_2: Kinship) -> list:
-    #     for inconsistency in case.inconsistencies:
-    #         if (inconsistency[0].kinship == kinship_1 and inconsistency[1].kinship == kinship_2) or \
-    #            (inconsistency[1].kinship == kinship_1 and inconsistency[0].kinship == kinship_2):
-    #             return inconsistency
-    #     return "NA"
+    def get_inconsistencies_by_kinship_pair(self, case: LabCase, kinship_1: Kinship, kinship_2: Kinship) -> list:
+        for inconsistency in case.inconsistencies:
+            if (inconsistency[0].kinship == kinship_1 and inconsistency[1].kinship == kinship_2) or \
+               (inconsistency[1].kinship == kinship_1 and inconsistency[0].kinship == kinship_2):
+                return inconsistency
+        return "NA"
 
-    # not working (child inconcistencies):
-    # def set_inconsistencies_vector(self, case: LabCase) -> None:
-    #     results = [""] * 3
-    #     inconcistencies_known_parent_alledged_parent = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.alledged_parent)
-    #     inconcistencies_known_parent_child = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.child)
-    #     inconcistencies_child_alledged_parent = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.child)
+    def set_inconsistencies_vector(self, case: LabCase) -> None:
+        results = [""] * 3
+        inconcistencies_known_parent_alledged_parent = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.alledged_parent)
+        inconcistencies_known_parent_child = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.child)
+        inconcistencies_child_alledged_parent = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.child)
         
-    #     if isinstance(inconcistencies_known_parent_alledged_parent, list):
-    #         results[0] = inconcistencies_known_parent_alledged_parent[2]
-    #     if isinstance(inconcistencies_known_parent_child, list):
-    #         results[1] = inconcistencies_known_parent_child[2]
-    #     if isinstance(inconcistencies_child_alledged_parent, list):
-    #         results[2] = inconcistencies_child_alledged_parent[2]
+        if isinstance(inconcistencies_known_parent_alledged_parent, list):
+            results[0] = inconcistencies_known_parent_alledged_parent[2]
+        if isinstance(inconcistencies_known_parent_child, list):
+            results[1] = inconcistencies_known_parent_child[2]
+        if isinstance(inconcistencies_child_alledged_parent, list):
+            results[2] = inconcistencies_child_alledged_parent[2]
 
-    #     case.inconsistencies_vector = results
+        case.inconsistencies_vector = results
 
     def set_inconsistencies_vector(self, case: LabCase) -> None:
         results = ["NA"] * 3
@@ -232,19 +235,19 @@ class CaseProcessingService():
     
     def set_inconsistencies_labels(self, case: LabCase) -> None:
         results = []
-        if case.subtype_of_case == LabCaseSubType.swap:
+        if LabCaseSubType.swap in case.subtype_of_case:
             results.append("TROCA")
-        if case.subtype_of_case == LabCaseSubType.potential_swap:
+        if LabCaseSubType.potential_swap in case.subtype_of_case:
             results.append("POSSÍVEL TROCA")
 
-        if case.subtype_of_case == LabCaseSubType.mutation_known_parent:
+        if LabCaseSubType.mutation_known_parent in case.subtype_of_case:
             inconsistency = self.get_inconsistencies_by_kinship_pair(case, Kinship.known_parent, Kinship.child)
             results.append("Mutação entre M e F no(s) loco(s): " + " ".join(inconsistency[3]) + ".")
-        if case.subtype_of_case == LabCaseSubType.mutation_alledged_parent:
+        if LabCaseSubType.mutation_alledged_parent in case.subtype_of_case:
             inconsistency = self.get_inconsistencies_by_kinship_pair(case, Kinship.child, Kinship.alledged_parent)
             results.append("Mutação entre F e SP no(s) loco(s): " + " ".join(inconsistency[3]) + ".")
 
-        case.inconsistencies_labels = results
+        case.inconsistencies_labels.extend(results)
 
     def generate_request(self, case: LabCase) -> None:
         pass
