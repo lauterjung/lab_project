@@ -1,4 +1,5 @@
 from contextlib import redirect_stdout
+from logging import warning
 from controller.case_processing_service import CaseProcessingService
 from controller.database import LabCaseDB
 from controller.lab_case_controller import LabCaseController
@@ -18,7 +19,9 @@ result_table_2 = []
 controller.register_from_folder(analyze_folder)
 
 for case in db.lab_cases:
-    controller.import_csv_from_folder(case, analyze_folder, kit)
+    warning_text = controller.import_csv_from_folder(case, analyze_folder, kit)
+    if warning_text != "":
+        print(warning_text)
 
 for case in db.lab_cases:
     controller.split_lab_case(case)

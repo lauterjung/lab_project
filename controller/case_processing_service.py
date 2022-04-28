@@ -177,7 +177,7 @@ class CaseProcessingService():
         inconsistencies_labels = " ".join(case.inconsistencies_labels) if case.inconsistencies_labels != [] else " "
         return(name, type_of_case,amelogenin_swap, inconsistencies_vector, inconsistencies_labels)
 
-    def set_inconsistencies(self, controller: LabCaseController, lab_case: LabCase) -> None: # can i remove controller dependecy?
+    def set_inconsistencies(self, controller: LabCaseController, lab_case: LabCase) -> None:
         result = []
 
         if lab_case.type_of_case == LabCaseType.trio:
